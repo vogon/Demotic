@@ -47,7 +47,6 @@
     <Compile Include="TelnetCmdLinePresentation.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="IPresentation.cs" />
-    <Compile Include="ITransport.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserAction.cs" />
