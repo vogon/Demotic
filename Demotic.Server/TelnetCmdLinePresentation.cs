@@ -68,9 +68,16 @@ namespace Demotic.Server
                         }
                         else if (!String.IsNullOrWhiteSpace(nextLine))
                         {
-                            UserAction a = CommandParser.ParseCommandLine(this, nextLine);
+                            try
+                            {
+                                UserAction a = CommandParser.ParseCommandLine(this, nextLine);
 
-                            RequestPending(a);
+                                RequestPending(a);
+                            }
+                            catch (CommandParser.ParseErrorException e)
+                            {
+                                PutMessage(string.Format("parse error: {0}", e.Message));
+                            }
                         }
                     }
                     else

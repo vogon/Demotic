@@ -8,7 +8,7 @@ namespace Demotic.Server
 {
     static class CommandParser
     {
-        private class ParseErrorException : Exception
+        public class ParseErrorException : Exception
         {
             public ParseErrorException(string message) : base(message) {}
         }
@@ -152,7 +152,10 @@ namespace Demotic.Server
             {
                 case TokenId.GET: return ParseGetArguments(client, state);
                 case TokenId.PUT: return ParsePutArguments(client, state);
-                default:          return null;
+                default:
+                    throw new ParseErrorException(
+                        message: string.Format("expected command, got {0}", cmd.Id)
+                    );
             }
         }
         #endregion
