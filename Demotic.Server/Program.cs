@@ -13,7 +13,7 @@ namespace Demotic.Server
         static void Main(string[] args)
         {
             Engine e = new Engine();
-            Script s = new Script("(root.Get(\"flag\") != null) && (((DNumber)root.Get(\"flag\")).IntValue >= 10)", 
+            Script s = new Script("(Get(\"flag\") != null) && (((DNumber)Get(\"flag\")).IntValue >= 10)",
                                   "Console.WriteLine(\"hi!\"); Environment.Exit(0);");
 
             Server srv = new Server();

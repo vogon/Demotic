@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ScriptEnvironment.cs" />
     <Compile Include="EnvironmentFactory.cs" />
     <Compile Include="ObjectSystem\DNumber.cs" />
     <Compile Include="ObjectSystem\DObject.cs" />

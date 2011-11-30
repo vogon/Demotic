@@ -27,23 +27,12 @@ namespace Demotic.Core
 
         public Script(string trigger, string effect)
         {
-            _env = EnvironmentFactory.CreateNoninteractive();
-            _session = Session.Create(_env);
+            _session = Session.Create(EnvironmentFactory.CommonRoot);
             _engine.Execute("using System; using Demotic.Core; using Demotic.Core.ObjectSystem;", _session);
 
             _trigger = _engine.CompileSubmission<bool>(trigger, _session, isInteractive: true);
             _effect = _engine.CompileSubmission<bool>(effect, _session, isInteractive: false);
         }
-
-        /*
-        public Script(string source)
-        {
-            _env = EnvironmentFactory.CreateNoninteractive();
-            _session = Session.Create(_env);
-
-            _engine.CompileSubmission<bool>(source + "return false;", _session, isInteractive: false);
-        }
-         */
 
         public bool IsTriggered
         {
@@ -61,7 +50,6 @@ namespace Demotic.Core
         private static ScriptEngine _engine;
 
         private Session _session;
-        private ScriptEnvironment _env;
 
         private Submission<bool> _trigger;
         private Submission<bool> _effect;

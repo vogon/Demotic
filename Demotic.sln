@@ -6,10 +6,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demotic.Core", "Demotic.Core\Demotic.Core.csproj", "{9E4E37F3-CA1D-4A9C-B906-8F228FA12F4A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03B2722A-A651-496F-9C4F-2D10F4305FB9}"
-	ProjectSection(SolutionItems) = preProject
-		dev-manifesto.txt = dev-manifesto.txt
-		misc-todos.txt = misc-todos.txt
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

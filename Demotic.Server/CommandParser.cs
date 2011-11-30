@@ -109,13 +109,25 @@ namespace Demotic.Server
         }
 
         #region Parser and generator
+        /// <summary>
+        ///   Remove escape sequences from a user-provided string literal (e.g., the sequence
+        ///   \" is replaced with a double quote character.)
+        /// </summary>
+        /// <param name="s">the escaped string</param>
+        /// <returns>an unescaped version of s</returns>
+        private static string Unescape(string s)
+        {
+            return s.Replace(@"\""", @"""")        // \" -> "
+                ;
+        }
+
         private static UserAction ParseGetArguments(IPresentationClient client, ParserState state)
         {
             ParserState leftovers;
 
             Token path = Expect(state, TokenId.STRING, out leftovers);
 
-            return new GetObjectAction(client, path.Match.Groups["val"].Value);
+            return new GetObjectAction(client, Unescape(path.Match.Groups["val"].Value));
         }
 
         private static UserAction ParsePutArguments(IPresentationClient client, ParserState state)
@@ -127,7 +139,7 @@ namespace Demotic.Server
 
             int i = int.Parse(value.Match.Groups["val"].Value);
 
-            return new PutNumberAction(client, path.Match.Groups["val"].Value, i);
+            return new PutNumberAction(client, Unescape(path.Match.Groups["val"].Value), i);
         }
 
         public static UserAction ParseCommandLine(IPresentationClient client, string line)
