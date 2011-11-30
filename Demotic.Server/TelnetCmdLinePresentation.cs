@@ -72,7 +72,14 @@ namespace Demotic.Server
                             {
                                 UserAction a = CommandParser.ParseCommandLine(this, nextLine);
 
-                                RequestPending(a);
+                                if (a != null)
+                                {
+                                    RequestPending(a);
+                                }
+                                else
+                                {
+                                    PutMessage("not implemented");
+                                }
                             }
                             catch (CommandParser.ParseErrorException e)
                             {

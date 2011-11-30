@@ -21,6 +21,7 @@ namespace Demotic.Server
             NUMBER,
             GET,
             PUT,
+            DO,
             WS
         }
 
@@ -30,6 +31,7 @@ namespace Demotic.Server
         private static Regex _NumberLiteral = new Regex(@"\G(?<val>(\+|-)?\d+)");
         private static Regex _Get = new Regex(@"\Gget", RegexOptions.IgnoreCase);
         private static Regex _Put = new Regex(@"\Gput", RegexOptions.IgnoreCase);
+        private static Regex _Do = new Regex(@"\Gdo", RegexOptions.IgnoreCase);
         private static Regex _Whitespace = new Regex(@"\G\s+");
 
         private static Token Next(ParserState state, out ParserState newState)
@@ -40,6 +42,7 @@ namespace Demotic.Server
                 new { Id = TokenId.NUMBER, Regex = _NumberLiteral, Skip = false },
                 new { Id = TokenId.GET,    Regex = _Get,           Skip = false },
                 new { Id = TokenId.PUT,    Regex = _Put,           Skip = false },
+                new { Id = TokenId.DO,     Regex = _Do,            Skip = false },
                 new { Id = TokenId.WS,     Regex = _Whitespace,    Skip = true },
             };
             ParserState curState = state;
@@ -142,6 +145,16 @@ namespace Demotic.Server
             return new PutNumberAction(client, Unescape(path.Match.Groups["val"].Value), i);
         }
 
+        private static UserAction ParseDoArguments(IPresentationClient client, ParserState state)
+        {
+            ParserState leftovers;
+
+            Token trigger = Expect(state, TokenId.STRING, out leftovers);
+            Token body = Expect(state, TokenId.STRING, out leftovers);
+
+            return null;
+        }
+
         public static UserAction ParseCommandLine(IPresentationClient client, string line)
         {
             ParserState state = new ParserState { Input = line, Cursor = 0 };
@@ -152,6 +165,7 @@ namespace Demotic.Server
             {
                 case TokenId.GET: return ParseGetArguments(client, state);
                 case TokenId.PUT: return ParsePutArguments(client, state);
+                case TokenId.DO: return ParseDoArguments(client, state);
                 default:
                     throw new ParseErrorException(
                         message: string.Format("expected command, got {0}", cmd.Id)
