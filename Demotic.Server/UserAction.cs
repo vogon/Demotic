@@ -30,7 +30,7 @@ namespace Demotic.Server
 
         public override void Execute()
         {
-            Client.PutObject(EnvironmentFactory.CommonRoot.Get(Path));
+            Client.PutObject(Program.World.GlobalObjectRoot.Get(Path));
         }
 
         private string Path { get; set; }
@@ -47,11 +47,43 @@ namespace Demotic.Server
 
         public override void Execute()
         {
-            EnvironmentFactory.CommonRoot.Set(Path, new DNumber(Value));
+            Program.World.GlobalObjectRoot.Set(Path, new DNumber(Value));
             Client.PutMessage(string.Format("put {0} to path {1}.", Value, Path));
         }
 
         private string Path { get; set; }
         private int Value { get; set; }
+    }
+
+    class DoScriptAction : UserAction
+    {
+        public DoScriptAction(IPresentationClient client, string trigger, string effect)
+            : base(client)
+        {
+            Trigger = trigger;
+            Effect = effect;
+        }
+
+        public override void Execute()
+        {
+            Script s = new Script(Trigger, Effect);
+
+            try
+            {
+                s.BindTo(Program.World);
+            }
+            catch (Exception e)
+            {
+                // TODO: remove pokemon exception handling
+                Client.PutMessage(string.Format("compilation failed: {0}", e.Message));
+                return;
+            }
+
+            Program.World.RegisterScript(s);
+            Client.PutMessage("script registered successfully.");
+        }
+
+        private string Trigger { get; set; }
+        private string Effect { get; set; }
     }
 }

@@ -10,9 +10,11 @@ namespace Demotic.Server
 {
     class Program
     {
+        public static World World { get; private set; }
+
         static void Main(string[] args)
         {
-            Engine e = new Engine();
+            World = new World();
             Script s = new Script("(Get(\"flag\") != null) && (((DNumber)Get(\"flag\")).IntValue >= 10)",
                                   "Console.WriteLine(\"hi!\"); Environment.Exit(0);");
 
@@ -20,8 +22,8 @@ namespace Demotic.Server
 
             srv.Start();
 
-            e.RegisterScript(s);
-            e.Start();
+            World.RegisterScript(s);
+            World.Start();
 
             while (true)
             {

@@ -27,7 +27,7 @@ namespace Demotic.Server
 
         // note: \G anchors matches at exactly the start position passed to .Match();
         // ^ anchors them at character 0)
-        private static Regex _StringLiteral = new Regex(@"\G""(?<val>([^""]|\"")*)""");
+        private static Regex _StringLiteral = new Regex(@"\G""(?<val>([^\\""]|\\"")*)""");
         private static Regex _NumberLiteral = new Regex(@"\G(?<val>(\+|-)?\d+)");
         private static Regex _Get = new Regex(@"\Gget", RegexOptions.IgnoreCase);
         private static Regex _Put = new Regex(@"\Gput", RegexOptions.IgnoreCase);
@@ -150,9 +150,11 @@ namespace Demotic.Server
             ParserState leftovers;
 
             Token trigger = Expect(state, TokenId.STRING, out leftovers);
-            Token body = Expect(state, TokenId.STRING, out leftovers);
+            Token body = Expect(leftovers, TokenId.STRING, out leftovers);
 
-            return null;
+            return new DoScriptAction(client, 
+                Unescape(trigger.Match.Groups["val"].Value),
+                Unescape(body.Match.Groups["val"].Value));
         }
 
         public static UserAction ParseCommandLine(IPresentationClient client, string line)
