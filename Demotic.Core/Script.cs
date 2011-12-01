@@ -27,31 +27,56 @@ namespace Demotic.Core
 
         public Script(string trigger, string effect)
         {
-            _session = Session.Create(EnvironmentFactory.CommonRoot);
-            _engine.Execute("using System; using Demotic.Core; using Demotic.Core.ObjectSystem;", _session);
-
-            _trigger = _engine.CompileSubmission<bool>(trigger, _session, isInteractive: true);
-            _effect = _engine.CompileSubmission<bool>(effect, _session, isInteractive: false);
+            _triggerSource = trigger;
+            _effectSource = effect;
+            _bindings = new Dictionary<World, WorldBinding>();
         }
 
-        public bool IsTriggered
+        private struct WorldBinding
         {
-            get
+            public Session Session { get; set; }
+
+            public Submission<bool> Trigger { get; set; }
+            public Submission<bool> Effect { get; set; }
+        }
+
+        public void BindTo(World world)
+        {
+            WorldBinding b = new WorldBinding();
+
+            b.Session = Session.Create(world.GlobalObjectRoot);
+            _engine.Execute("using System; using Demotic.Core; using Demotic.Core.ObjectSystem;", b.Session);
+
+            b.Trigger = _engine.CompileSubmission<bool>(_triggerSource, b.Session, isInteractive: true);
+            b.Effect = _engine.CompileSubmission<bool>(_effectSource, b.Session, isInteractive: false);
+
+            _bindings[world] = b;
+        }
+
+        public bool IsTriggered(World world)
+        {
+            if (!_bindings.ContainsKey(world))
             {
-                return _trigger.Execute();
+                BindTo(world);
             }
-        }
 
-        public void Run()
+            return _bindings[world].Trigger.Execute();
+        }
+        
+        public void Run(World world)
         {
-            _effect.Execute();
+            if (!_bindings.ContainsKey(world))
+            {
+                BindTo(world);
+            }
+
+            _bindings[world].Effect.Execute();
         }
 
         private static ScriptEngine _engine;
+        private string _triggerSource;
+        private string _effectSource;
 
-        private Session _session;
-
-        private Submission<bool> _trigger;
-        private Submission<bool> _effect;
+        private Dictionary<World, WorldBinding> _bindings;
     }
 }

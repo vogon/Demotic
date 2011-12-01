@@ -5,14 +5,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Demotic.Core.ObjectSystem;
+
 namespace Demotic.Core
 {
-    public class Engine
+    public class World
     {
-        public Engine()
+        public World()
         {
             _scripts = new List<Script>();
             _stopLoopSource = new CancellationTokenSource();
+
+            GlobalObjectRoot = new DRecord();
+            GlobalObjectRoot["test"] = new DNumber(3);
         }
 
         public void Start()
@@ -42,9 +47,9 @@ namespace Demotic.Core
             {
                 foreach (Script s in _scripts)
                 {
-                    if (s.IsTriggered)
+                    if (s.IsTriggered(this))
                     {
-                        s.Run();
+                        s.Run(this);
                     }
                 }
 
@@ -56,5 +61,7 @@ namespace Demotic.Core
         private CancellationTokenSource _stopLoopSource;
 
         private List<Script> _scripts;
+
+        public DRecord GlobalObjectRoot { get; private set; }
     }
 }
