@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Demotic.Core.ObjectSystem
 {
-    class DString : DObject
+    public class DString : DObject
     {
         public DString(string value)
         {
