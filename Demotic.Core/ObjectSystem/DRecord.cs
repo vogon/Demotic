@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +11,22 @@ namespace Demotic.Core.ObjectSystem
         public DRecord()
         {
             _values = new Dictionary<string, DObject>();
+        }
+
+        // NOTE: Roslyn CTP coerces "dynamic" fields down to "object", and doesn't support
+        // the dynamic type, breaking dynamic binding.  dynamic binding is inaccessible from
+        // scripts until a later beta or Dev11 ship.
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            if (_values.ContainsKey(binder.Name))
+            {
+                result = _values[binder.Name];
+                return true;
+            }
+            else
+            {
+                return base.TryGetMember(binder, out result);
+            }
         }
 
         public DObject this[string name]
