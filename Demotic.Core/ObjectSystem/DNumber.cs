@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Demotic.Core.ObjectSystem
@@ -16,14 +17,52 @@ namespace Demotic.Core.ObjectSystem
     /// </remarks>
     public class DNumber : DObject
     {
-        public DNumber(int intValue)
+        public DNumber(decimal decValue)
         {
-            _value = intValue;
+            _value = decValue;
         }
 
-        public DNumber(double doubleValue)
+        // NOTE: the Roslyn CTP is missing operator overloading support.  (sad face.)
+        // these operators are inaccessible from scripts until a later beta or perhaps
+        // Dev11 ship.
+        public static implicit operator DNumber(int i)
         {
-            _value = (decimal)doubleValue;
+            return new DNumber(i);
+        }
+
+        public static implicit operator DNumber(double d)
+        {
+            return new DNumber((decimal)d);
+        }
+
+        public static explicit operator int(DNumber dn)
+        {
+            return dn.IntValue;
+        }
+
+        public static explicit operator double(DNumber dn)
+        {
+            return dn.DoubleValue;
+        }
+
+        public static DNumber operator -(DNumber a)
+        {
+            return new DNumber(-a._value);
+        }
+
+        public static DNumber operator +(DNumber a)
+        {
+            return a;
+        }
+
+        public static bool operator >=(DNumber a, DNumber b)
+        {
+            return a._value >= b._value;
+        }
+
+        public static bool operator <=(DNumber a, DNumber b)
+        {
+            return a._value <= b._value;
         }
 
         public int IntValue
