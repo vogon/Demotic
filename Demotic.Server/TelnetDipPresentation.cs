@@ -8,12 +8,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Demotic.Core.ObjectSystem;
+using Demotic.Dip;
 
 namespace Demotic.Server
 {
-    class TelnetCmdLinePresentation : IPresentation
+    class TelnetDipPresentation : IPresentation
     {
-        public TelnetCmdLinePresentation(IPEndPoint listenEndpoint)
+        public TelnetDipPresentation(IPEndPoint listenEndpoint)
         {
             _server = new TcpListener(listenEndpoint);
         }
@@ -25,7 +26,7 @@ namespace Demotic.Server
 
         public IPresentationClient AwaitNextConnection()
         {
-            return new TelnetCmdLinePresentation.Client(_server.AcceptTcpClient());
+            return new TelnetDipPresentation.Client(_server.AcceptTcpClient());
         }
 
         public void Stop()
@@ -68,22 +69,19 @@ namespace Demotic.Server
                         }
                         else if (!String.IsNullOrWhiteSpace(nextLine))
                         {
-                            try
-                            {
-                                UserAction a = CommandParser.ParseCommandLine(this, nextLine);
+                            // HEY THIS IS A HACK YOU SHOULD FIX IT BEFORE COMMITTING
+                            // LOVE, COLIN
+                            Request req = Request.Decode(Encoding.ASCII.GetBytes(nextLine));
 
-                                if (a != null)
-                                {
-                                    RequestPending(a);
-                                }
-                                else
-                                {
-                                    PutMessage("not implemented");
-                                }
-                            }
-                            catch (CommandParser.ParseErrorException e)
+                            if (req is GetRequest)
                             {
-                                PutMessage(string.Format("parse error: {0}", e.Message));
+                                UserAction a = new GetObjectAction(this, (req as GetRequest).Path);
+
+                                RequestPending(a);
+                            }
+                            else
+                            {
+                                PutMessage("hey idk what you're getting at");
                             }
                         }
                     }

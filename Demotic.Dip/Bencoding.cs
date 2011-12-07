@@ -7,8 +7,6 @@ namespace Demotic.Dip
 {
     public static partial class Bencoding
     {
-        private static Encoding DefaultBytestringEncoding = Encoding.UTF8;
-
         private static T[] JoinArrays<T>(IEnumerable<T[]> arrs)
         {
             T[] joined = new T[arrs.Sum(arr => arr.Length)];

@@ -38,6 +38,14 @@ namespace Demotic.Core.ObjectSystem
             this[name] = value;
         }
 
+        public Dictionary<string, DObject> Values
+        {
+            get
+            {
+                return _values;
+            }
+        }
+
         private Dictionary<string, DObject> _values;
     }
 }

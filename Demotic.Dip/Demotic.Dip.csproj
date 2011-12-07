@@ -43,6 +43,8 @@
     <Compile Include="Bencoding.cs" />
     <Compile Include="Bencoding.Decode.cs" />
     <Compile Include="Bencoding.Encode.cs" />
+    <Compile Include="DObjectAdapter.cs" />
+    <Compile Include="Requests.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CommandParser.cs" />
     <Compile Include="TelnetCmdLinePresentation.cs" />
+    <Compile Include="TelnetDipPresentation.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="IPresentation.cs" />
     <Compile Include="Program.cs" />
@@ -56,6 +57,10 @@
     <ProjectReference Include="..\Demotic.Core\Demotic.Core.csproj">
       <Project>{9E4E37F3-CA1D-4A9C-B906-8F228FA12F4A}</Project>
       <Name>Demotic.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Demotic.Dip\Demotic.Dip.csproj">
+      <Project>{70E53AFA-A354-42AA-8111-600435232560}</Project>
+      <Name>Demotic.Dip</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

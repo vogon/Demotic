@@ -18,7 +18,7 @@ namespace Demotic.Server
 
             // TODO: hardcoded for now; add configuration
             IPEndPoint telnet = new IPEndPoint(IPAddress.Any, 17717);
-            _personalities.Add(new TelnetCmdLinePresentation(telnet));
+            _personalities.Add(new TelnetDipPresentation(telnet));
         }
 
         private void AcceptLoop(IPresentation personality)
