@@ -45,7 +45,7 @@ namespace Demotic.Core
         {
             WorldBinding b = new WorldBinding();
 
-            b.Session = Session.Create(world);
+            b.Session = Session.Create(world.GlobalObjectRoot);
             _engine.Execute("using System; using Demotic.Core; using Demotic.Core.ObjectSystem;", b.Session);
 
             b.Trigger = _engine.CompileSubmission<bool>(_triggerSource, b.Session, isInteractive: true);

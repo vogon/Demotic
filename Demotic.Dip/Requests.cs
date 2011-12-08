@@ -22,9 +22,35 @@ namespace Demotic.Dip
 
     public abstract class Request
     {
+        //public static Request Decode(byte[] encoded)
+        //{
+        //    DRecord msgPayload = DObjectAdapter.Decode(encoded) as DRecord;
+
+        //    if (msgPayload == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+        //    {
+        //        foreach (object attr in t.GetCustomAttributes(false))
+        //        {
+        //            RequestAttribute req = attr as RequestAttribute;
+        //            if (req == null) continue;
+
+        //            if (string.Equals(((DString)msgPayload.Get("op")).Value, req.Opcode))
+        //            {
+        //                return (Request)t.GetConstructor(new[] { typeof(DRecord) }).Invoke(new[] { msgPayload });
+        //            }
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
         public static Request Decode(byte[] encoded)
         {
-            DRecord msgPayload = DObjectAdapter.Decode(encoded) as DRecord;
+            dynamic msgPayload = DObjectAdapter.Decode(encoded);
 
             if (msgPayload == null)
             {
@@ -38,7 +64,7 @@ namespace Demotic.Dip
                     RequestAttribute req = attr as RequestAttribute;
                     if (req == null) continue;
 
-                    if (string.Equals(((DString)msgPayload.Get("op")).Value, req.Opcode))
+                    if (msgPayload.op == req.Opcode)
                     {
                         return (Request)t.GetConstructor(new[] { typeof(DRecord) }).Invoke(new[] { msgPayload });
                     }
@@ -56,12 +82,20 @@ namespace Demotic.Dip
     [Request("get")]
     public class GetRequest : Request
     {
-        public GetRequest(DRecord request)
+        public GetRequest(dynamic request)
         {
-            Debug.Assert(((DString)request.Get("op")).Value.Equals("get"));
+            Debug.Assert((bool)(request.op == "get"));
 
-            Path = ((DString)request.Get("path")).Value;
+            Path = request.path;
         }
+        
+        //public GetRequest(DRecord request)
+        //{
+        //    Debug.Assert(((DString)request.Get("op")).Value.Equals("get"));
+
+        //    Path = ((DString)request.Get("path")).Value;
+        //}
+        
 
         public override byte[] Bencode()
         {

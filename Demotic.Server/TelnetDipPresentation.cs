@@ -101,13 +101,15 @@ namespace Demotic.Server
 
             public void PutObject(DObject obj)
             {
-                if (obj is DNumber)
-                {
-                    WriteResponseString((obj as DNumber).DoubleValue.ToString() + "\r\n\r\n");
-                }
-                else if (obj == null)
+                if (obj == null)
                 {
                     WriteResponseString("object does not exist.\r\n\r\n");
+                }
+                else
+                {
+                    byte[] encoded = DObjectAdapter.Encode(obj);
+
+                    WriteResponseString(new string(Encoding.ASCII.GetChars(encoded)) + "\r\n\r\n");
                 }
             }
 

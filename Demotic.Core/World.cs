@@ -62,6 +62,6 @@ namespace Demotic.Core
 
         private List<Script> _scripts;
 
-        public dynamic GlobalObjectRoot { get; private set; }
+        public DRecord GlobalObjectRoot { get; private set; }
     }
 }
