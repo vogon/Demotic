@@ -36,9 +36,9 @@ namespace Demotic.Server
         private string Path { get; set; }
     }
 
-    class PutNumberAction : UserAction
+    class PutObjectAction : UserAction
     {
-        public PutNumberAction(IPresentationClient client, string path, int value)
+        public PutObjectAction(IPresentationClient client, string path, DObject value)
             : base(client)
         {
             Path = path;
@@ -47,12 +47,12 @@ namespace Demotic.Server
 
         public override void Execute()
         {
-            Program.World.GlobalObjectRoot.Set(Path, new DNumber(Value));
+            Program.World.GlobalObjectRoot.Set(Path, Value);
             Client.PutMessage(string.Format("put {0} to path {1}.", Value, Path));
         }
 
         private string Path { get; set; }
-        private int Value { get; set; }
+        private DObject Value { get; set; }
     }
 
     class DoScriptAction : UserAction

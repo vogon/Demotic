@@ -71,11 +71,17 @@ namespace Demotic.Server
                         {
                             // HEY THIS IS A HACK YOU SHOULD FIX IT BEFORE COMMITTING
                             // LOVE, COLIN
-                            Request req = Request.Decode(Encoding.ASCII.GetBytes(nextLine));
+                            Message req = Message.Decode(Encoding.ASCII.GetBytes(nextLine));
 
-                            if (req is GetRequest)
+                            if (req is GetMessage)
                             {
-                                UserAction a = new GetObjectAction(this, (req as GetRequest).Path);
+                                UserAction a = new GetObjectAction(this, (req as GetMessage).Path);
+
+                                RequestPending(a);
+                            }
+                            else if (req is PutMessage)
+                            {
+                                UserAction a = new PutObjectAction(this, (req as PutMessage).Path, (req as PutMessage).Value);
 
                                 RequestPending(a);
                             }
@@ -96,28 +102,26 @@ namespace Demotic.Server
 
             public void PutMessage(string message)
             {
-                WriteResponseString(message + "\r\n\r\n");
+                WriteDipMessage(new SayMessage { Message = message });
             }
 
             public void PutObject(DObject obj)
             {
                 if (obj == null)
                 {
-                    WriteResponseString("object does not exist.\r\n\r\n");
+                    PutMessage("object does not exist.");
                 }
                 else
                 {
-                    byte[] encoded = DObjectAdapter.Encode(obj);
-
-                    WriteResponseString(new string(Encoding.ASCII.GetChars(encoded)) + "\r\n\r\n");
+                    WriteDipMessage(new ObjectMessage { Value = obj });
                 }
             }
 
-            private void WriteResponseString(string s)
+            private void WriteDipMessage(Message m)
             {
                 StreamWriter writer = new StreamWriter(_stream, _DefaultEncoding);
 
-                writer.Write(s);
+                writer.Write(new string(Encoding.ASCII.GetChars(m.Bencode())) + "\r\n");
                 writer.Flush();
             }
 

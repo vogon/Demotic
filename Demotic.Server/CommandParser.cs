@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Demotic.Core.ObjectSystem;
+
 namespace Demotic.Server
 {
     static class CommandParser
@@ -142,7 +144,7 @@ namespace Demotic.Server
 
             int i = int.Parse(value.Match.Groups["val"].Value);
 
-            return new PutNumberAction(client, Unescape(path.Match.Groups["val"].Value), i);
+            return new PutObjectAction(client, Unescape(path.Match.Groups["val"].Value), new DNumber(i));
         }
 
         private static UserAction ParseDoArguments(IPresentationClient client, ParserState state)
