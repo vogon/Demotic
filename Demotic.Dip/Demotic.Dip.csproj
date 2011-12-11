@@ -48,6 +48,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Messages.Informational.cs" />
     <Compile Include="Messages.Objects.cs" />
+    <Compile Include="MessageRouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
