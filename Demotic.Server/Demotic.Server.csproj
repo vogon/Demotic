@@ -50,6 +50,7 @@
     <Compile Include="IPresentation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TelnetDipPresentation.Client.cs" />
     <Compile Include="UserAction.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>

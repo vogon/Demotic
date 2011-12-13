@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -45,10 +46,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageRouterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BencodingTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Demotic.Core\Demotic.Core.csproj">
+      <Project>{9E4E37F3-CA1D-4A9C-B906-8F228FA12F4A}</Project>
+      <Name>Demotic.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Demotic.Dip\Demotic.Dip.csproj">
       <Project>{70E53AFA-A354-42AA-8111-600435232560}</Project>
       <Name>Demotic.Dip</Name>
