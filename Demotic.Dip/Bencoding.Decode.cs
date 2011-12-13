@@ -71,6 +71,11 @@ namespace Demotic.Dip
                 }
             }
 
+            if (separatorPos == -1)
+            {
+                throw new BadBencodingException("bytestring size falls off end");
+            }
+
             // convert size to a UTF-16 string.
             string sizeString = new string(Encoding.ASCII.GetChars(encoded, start, separatorPos - start));
 

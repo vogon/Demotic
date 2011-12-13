@@ -29,23 +29,27 @@ namespace Demotic.Server
 
             private void RequestServiceTask()
             {
-                StreamReader reader = new StreamReader(_stream, _DefaultEncoding);
-                LinkedList<string> pendingLines = new LinkedList<string>();
+                List<byte> buffer = new List<byte>();
 
                 while (true)
                 {
                     if (RequestPending != null)
                     {
-                        string nextLine = reader.ReadLine();
+                        int b = _stream.ReadByte();
 
-                        if (nextLine == null)
+                        if (b == -1)
                         {
-                            // next line is null; stream has closed.
+                            // todo: figure out how to handle disconnection
                             return;
                         }
-                        else if (!String.IsNullOrWhiteSpace(nextLine))
+                        else
                         {
-                            DObject o = DObjectAdapter.Decode(Encoding.ASCII.GetBytes(nextLine));
+                            buffer.Add((byte)b);
+                        }
+
+                        try
+                        {
+                            DObject o = DObjectAdapter.Decode(buffer.ToArray());
                             var action = UserAction.Make(this, o);
 
                             if (action != null)
@@ -56,6 +60,14 @@ namespace Demotic.Server
                             {
                                 PutMessage("hey idk what you're getting at");
                             }
+
+                            buffer.Clear();
+                        }
+                        catch (BadBencodingException)
+                        {
+                            // suppress -- the buffer may be a prefix of a valid bencoded
+                            // message.
+                            Console.WriteLine("bop");
                         }
                     }
                     else

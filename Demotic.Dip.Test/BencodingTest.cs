@@ -131,6 +131,15 @@ namespace Demotic.Dip.Test
         }
 
         [TestMethod, ExpectedException(typeof(BadBencodingException))]
+        public void TestDecodeBytestringPrematureEof2()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("12");
+            int next;
+
+            byte[] actual = (byte[])Bencoding.Decode(encoded, out next);
+        }
+
+        [TestMethod, ExpectedException(typeof(BadBencodingException))]
         public void TestDecodeBytestringSizeGarbage()
         {
             byte[] encoded = Encoding.ASCII.GetBytes("1%ab#2:interference");
