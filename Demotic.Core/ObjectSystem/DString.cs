@@ -53,6 +53,11 @@ namespace Demotic.Core.ObjectSystem
             return Value.GetHashCode();
         }
 
+        public override T Accept<T>(IDObjectVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+
         public string Value
         {
             get { return _value; }

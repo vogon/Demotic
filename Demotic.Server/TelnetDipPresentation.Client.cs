@@ -49,7 +49,7 @@ namespace Demotic.Server
 
                         try
                         {
-                            DObject o = DObjectAdapter.Decode(buffer.ToArray());
+                            DObject o = DObjectBencoder.Decode(buffer.ToArray());
                             var action = UserAction.Make(this, o);
 
                             if (action != null)
@@ -67,7 +67,6 @@ namespace Demotic.Server
                         {
                             // suppress -- the buffer may be a prefix of a valid bencoded
                             // message.
-                            Console.WriteLine("bop");
                         }
                     }
                     else
@@ -100,7 +99,7 @@ namespace Demotic.Server
             {
                 StreamWriter writer = new StreamWriter(_stream, _DefaultEncoding);
 
-                writer.Write(new string(Encoding.ASCII.GetChars(DObjectAdapter.Encode(o))) + "\r\n");
+                writer.Write(new string(Encoding.ASCII.GetChars(DObjectBencoder.Encode(o))) + "\r\n");
                 writer.Flush();
             }
 

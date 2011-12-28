@@ -29,6 +29,11 @@ namespace Demotic.Core.ObjectSystem
             }
         }
 
+        public override T Accept<T>(IDObjectVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+
         public DObject this[string name]
         {
             get

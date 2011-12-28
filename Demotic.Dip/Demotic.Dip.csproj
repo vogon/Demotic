@@ -44,6 +44,7 @@
     <Compile Include="Bencoding.Decode.cs" />
     <Compile Include="Bencoding.Encode.cs" />
     <Compile Include="DObjectAdapter.cs" />
+    <Compile Include="MessageChannel.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Messages.Informational.cs" />

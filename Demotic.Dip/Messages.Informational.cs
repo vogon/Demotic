@@ -22,7 +22,7 @@ namespace Demotic.Dip
         {
             var dict = new Dictionary<object, object>();
             dict.Add("op", "say");
-            dict.Add("message", DObjectAdapter.Encode(Message));
+            dict.Add("message", DObjectBencoder.Encode(Message));
 
             return Bencoding.Encode(dict);
         }
@@ -75,7 +75,7 @@ namespace Demotic.Dip
         {
             var dict = new Dictionary<object, object>();
             dict.Add("op", "obj");
-            dict.Add("value", DObjectAdapter.Encode(Value));
+            dict.Add("value", DObjectBencoder.Encode(Value));
 
             return Bencoding.Encode(dict);
         }

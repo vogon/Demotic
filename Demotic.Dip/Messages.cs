@@ -24,7 +24,7 @@ namespace Demotic.Dip
     {
         public static Message Decode(byte[] encoded)
         {
-            dynamic msgPayload = DObjectAdapter.Decode(encoded);
+            dynamic msgPayload = DObjectBencoder.Decode(encoded);
 
             if (msgPayload == null)
             {

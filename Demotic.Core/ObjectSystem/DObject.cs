@@ -9,5 +9,6 @@ namespace Demotic.Core.ObjectSystem
 {
     public abstract class DObject : DynamicObject
     {
+        public abstract T Accept<T>(IDObjectVisitor<T> visitor);
     }
 }

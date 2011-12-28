@@ -43,7 +43,7 @@ namespace Demotic.Dip
             var dict = new Dictionary<object, object>();
             dict.Add("op", "put");
             dict.Add("path", Path);
-            dict.Add("value", DObjectAdapter.Encode(Value));
+            dict.Add("value", DObjectBencoder.Encode(Value));
 
             return Bencoding.Encode(dict);
         }

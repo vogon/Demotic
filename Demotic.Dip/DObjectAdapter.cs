@@ -8,40 +8,19 @@ using Demotic.Core.ObjectSystem;
 
 namespace Demotic.Dip
 {
-    public static class DObjectAdapter
+    public static class DObjectBencoder : IDObjectVisitor<byte[]>
     {
-        public static byte[] Encode(DObject obj)
-        {
-            if (obj is DNumber)
-            {
-                return Encode((DNumber)obj);
-            }
-            else if (obj is DString)
-            {
-                return Encode((DString)obj);
-            }
-            else if (obj is DRecord)
-            {
-                return Encode((DRecord)obj);
-            }
-            else
-            {
-                Debug.Fail("unexpected object type");
-                return null;
-            }
-        }
-
-        private static byte[] Encode(DNumber num)
+        private static byte[] Visit(DNumber num)
         {
             return Bencoding.Encode(num.IntValue);
         }
 
-        private static byte[] Encode(DString str)
+        private static byte[] Visit(DString str)
         {
             return Bencoding.Encode(Encoding.UTF8.GetBytes(str.Value));
         }
 
-        private static byte[] Encode(DRecord rec)
+        private static byte[] Visit(DRecord rec)
         {
             Dictionary<string, DObject> values = rec.Values;
             var contents = new Dictionary<object, object>();
