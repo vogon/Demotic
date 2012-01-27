@@ -1,37 +1,82 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Demotic.Dip
+namespace Demotic.Network
 {
+    public delegate void ChannelClosedCallback();
+    public delegate void MessageReceivedCallback(Message msg);
+
     public class MessageChannel
     {
-        public delegate void MessageReceivedDelegate(Message msg);
-
-        public MessageChannel(Stream input, Stream output)
+        public MessageChannel(IMessageTransport xport, IMessageFormat format)
         {
-            if (!input.CanRead) throw new ArgumentException("input is not readable");
-            if (!output.CanWrite) throw new ArgumentException("output is not writable");
+            _xport = xport;
+            _format = format;
+            _buffer = new List<byte>();
+            _nextSeq = 1;
 
-            _input = input;
-            _output = output;
+            _xport.DataReady += OnDataReady;
+            _xport.ConnectionClosed += OnConnectionClosed;
         }
 
-        private Stream _input;
-        private Stream _output;
-
-        public event MessageReceivedDelegate MessageReceived;
+        public event MessageReceivedCallback MessageReceived;
+        public event ChannelClosedCallback ChannelClosed;
 
         public void SendMessage(Message msg)
         {
-            byte[] buf = msg.Bencode();
+            // get next sequence number and put it into msg.
+            msg.SequenceNumber = _nextSeq;
+            _nextSeq++;
 
-            _output.Write(buf, 0, buf.Length);
+            byte[] payload = _format.Encode(msg);
+
+            _xport.SendData(payload);
         }
 
-        public void Close()
+        private void OnDataReady(byte[] data)
         {
-            _input.Close();
-            _output.Close();
+            _buffer.AddRange(data);
+
+            int bytesConsumed;
+
+            if (MessageReceived == null) return;
+
+            try
+            {
+                Message? msg = _format.Decode(_buffer.ToArray(), out bytesConsumed);
+
+                if (msg != null)
+                {
+                    MessageReceived(msg.Value);
+                    _buffer.RemoveRange(0, bytesConsumed);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("error in message format; flushing buffer");
+                _buffer.Clear();
+            }
         }
+
+        private void OnConnectionClosed()
+        {
+            if (ChannelClosed != null)
+            {
+                ChannelClosed();
+            }
+        }
+
+        private int _nextSeq;
+
+        private IMessageTransport _xport;
+        private IMessageFormat _format;
+
+        private List<byte> _buffer;
     }
 }

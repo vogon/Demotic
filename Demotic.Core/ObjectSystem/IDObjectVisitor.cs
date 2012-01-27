@@ -7,8 +7,8 @@ namespace Demotic.Core.ObjectSystem
 {
     public interface IDObjectVisitor<T>
     {
-        public T Visit(DRecord rec);
-        public T Visit(DString str);
-        public T Visit(DNumber num);
+        T Visit(DRecord rec);
+        T Visit(DString str);
+        T Visit(DNumber num);
     }
 }

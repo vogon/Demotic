@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="da7d05c5-1e1f-483c-913a-0c76af91fcd3" name="Demotic.Network" linkedPackageId="72965ee7-dc2c-43d7-ac58-39079008fb62" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <ownedCommentsInternal>
+    <comment Id="ca71bb1a-04ba-485b-a35b-751ccb57478c">
+      <elementDefinition Id="192284cb-151e-4ee8-b51d-9811ec0589e5" />
+      <body>IMessageTransports must be composable as well (e.g., TCP transport + SSL/TLS + gzip = GzipTransport(TlsTransport(TcpMessageTransport)))</body>
+    </comment>
+    <comment Id="2f26df3b-c2a5-4e76-8fe1-4dd04b975a9c">
+      <elementDefinition Id="c8817e81-8159-429a-b596-3353175e7da3" />
+      <body>Would be cool to add additional message formats for logging, but this extension point not mandatory right away</body>
+    </comment>
+  </ownedCommentsInternal>
+  <profileInstances>
+    <packageHasProfileInstances Id="a21b2802-5a67-4832-88df-2c1916cfaef6">
+      <profileInstance Id="1a9f594f-d00f-4da8-90ee-841eae1a8c1d" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="411bf7a8-bb97-4d4a-acdd-fd9273041c26">
+      <profileInstance Id="223fba75-6298-4be2-a44f-d887ba32889d" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="70d48d89-ecfb-4b69-98e4-367326614432" name="MessageChannel" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="47ac0493-6d93-45a6-810c-0668a745a08e" />
+        <suppliersInternal>
+          <dependency Id="4134670f-d5ef-4f2a-96ab-eb7cb9ec33d3">
+            <classMoniker Id="9876d19f-7a25-421a-a6e0-cf8e643425c6" LastKnownName="Message" />
+            <elementDefinition Id="8da0ad4b-b664-4c24-9fe8-525a2eb5bdd3" />
+          </dependency>
+        </suppliersInternal>
+        <targetEnds>
+          <association Id="b2b9a6cb-8dc9-4cbd-9f71-f50c4556d4cf" isDerived="false" sourceEndRoleName="MessageChannel" targetEndRoleName="IMessageTransport" isLeaf="false" isAbstract="false">
+            <interfaceMoniker Id="7ec426c2-273e-4a85-b397-4f0a55c9de10" LastKnownName="IMessageTransport" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9e6e6fa1-590e-4dc1-80eb-09e0c1f3361e" name="MessageChannel" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="a88c3f2a-5351-4a8f-b900-a96e58f504ec" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d9ae2763-4f3f-4358-9237-12f52e90d32d" name="IMessageTransport" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <elementDefinition Id="3c4cfdf1-6f69-4d2e-903f-496b0dfa5e6d" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="9ae06e5b-b9f5-4993-8a2b-786efcb6044f" />
+          </association>
+          <association Id="2afd7b6e-b00b-429e-b3fe-38e8fcf5af98" isDerived="false" sourceEndRoleName="MessageChannel" targetEndRoleName="IMessageFormat" isLeaf="false" isAbstract="false">
+            <interfaceMoniker Id="159dbe6c-e47a-4ff1-8a69-284d2b5d51f5" LastKnownName="IMessageFormat" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9d557c39-7025-43c8-9192-3a0d98e4b246" name="MessageChannel" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="85bee991-df37-44d6-97f5-a619417d4f3a" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="7f199d71-e9ce-4b63-9906-fb565f63df44" name="IMessageFormat" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <elementDefinition Id="56568a38-5ebc-49b5-a51d-0829bafd51e7" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="a3a3e1f0-3bd3-4e79-9b3e-18c42730f779" />
+          </association>
+        </targetEnds>
+        <ownedOperationsInternal>
+          <operation Id="080bda11-7f52-4a61-b676-ed21f6f48783" name="callback MessageReady" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="72c92251-9898-45f8-8aed-eb99d8be943f" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="de5dc7e4-1660-47d8-a348-3e49f442053b" name="Message" direction="In" isUnique="false">
+                  <elementDefinition Id="c5c909b3-3892-4c67-89ec-145bfd1a3c40" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="02cb76b8-0de9-4e5c-ad1d-db8c2133232f" name="SendMessage" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="25420d3c-49e2-45b6-88b4-eea02bb6b852" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="71c78b33-ca33-4986-83fb-00a947ea637f" name="Message" direction="In" isUnique="false">
+                  <elementDefinition Id="421aaa90-9e55-4841-8129-553841018ced" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="ac7ea5c2-e90b-43c7-a643-b29e2add0757" name="ConsoleMessageTransport" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="9a1eb289-3a5b-4210-a4c0-e6a829ec2f0c" />
+        <suppliersInternal>
+          <interfaceRealization Id="cc963244-1870-4e2d-9114-f3ffb98d94cf">
+            <interfaceMoniker Id="7ec426c2-273e-4a85-b397-4f0a55c9de10" LastKnownName="IMessageTransport" />
+            <elementDefinition Id="17670035-de41-44a0-9e38-2568209a2890" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="4f540362-bb7f-4339-b54c-c8f91524bf35" name="callback DataReady" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ff6e9b98-bbee-44bf-af29-9af023f8acfc" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="5e81daf7-7a6d-422a-9fe1-9dced88b4b76" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="ac583ae6-6f03-40d9-a6a2-9a41a4923d7f" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="66202220-7923-470c-be61-a3c5a79d48bb" name="SendData" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="08809dab-ee7c-4192-b358-cd21aa7bf67b" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="28f3d3d2-77af-4f16-b249-c14a1af80032" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="afba36cb-b692-40cb-a1d7-960a684f13c6" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="7ec426c2-273e-4a85-b397-4f0a55c9de10" name="IMessageTransport" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="3771bca3-8e2e-472c-87a1-9504d22b82e6" />
+        <ownedOperations>
+          <operation Id="3cda1f9b-b373-4069-befc-9a877a215116" name="callback DataReady" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="e823dac5-bff6-481d-a27b-2de92abdc916" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="d6f32686-808f-4b83-bce7-264e5a2da906" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="dd1b22b3-6ade-4537-9c9f-99f946f7830f" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="8bacb1d8-f2c9-4d96-9f5d-e54bd992df0a" name="SendData" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="de8f9ada-c9e5-4f80-90dd-88c886a0ae55" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="d8dee01a-5b1c-46c2-9f46-d0709222bbc8" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="60c7a071-96a8-4d44-9df6-de419d857e99" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="5e240915-9d2c-4e3b-9795-a0ea4b437744" name="TcpMessageTransport" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="4000bad2-ff96-49da-b66e-85cb01dd6f6d" />
+        <suppliersInternal>
+          <interfaceRealization Id="12388e8e-4739-4134-abed-c3be9ac88955">
+            <interfaceMoniker Id="7ec426c2-273e-4a85-b397-4f0a55c9de10" LastKnownName="IMessageTransport" />
+            <elementDefinition Id="e09c9bde-2fc7-4d04-ab27-2f1e5de3a5e7" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="a16196b3-5cb5-4fc7-9eaa-3cb868e62adf" name="callback DataReady" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="dfb95aee-0d9a-4af9-bb8b-72131360f178" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="3f53c967-00aa-4d29-9a08-5ce7e1218d86" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="fb6c9b31-8aaa-4572-b35e-7e3fd8d78e27" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="06ac1a38-8e58-4ba1-93f2-42579782b661" name="SendData" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="52b51209-e91f-401d-95bb-933f79c2a8b1" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="7588e259-61a7-4523-9eef-eecee25371ed" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="29d2e306-01c5-4f73-b5e9-31910c1c6455" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="159dbe6c-e47a-4ff1-8a69-284d2b5d51f5" name="IMessageFormat" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="19f0b3d5-13bd-45db-ad78-128c7bbf0b63" />
+        <suppliersInternal>
+          <dependency Id="fa68e3a0-5594-438e-a8a8-de10e3405f98">
+            <classMoniker Id="9876d19f-7a25-421a-a6e0-cf8e643425c6" LastKnownName="Message" />
+            <elementDefinition Id="5d477377-e428-47b4-86ff-2b828dc668fe" />
+          </dependency>
+        </suppliersInternal>
+        <ownedOperations>
+          <operation Id="d9408b5a-70dc-437f-b5f1-15d35370f1a2" name="Encode" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="46fc5d79-9751-4633-a7de-c2dbe2102f78" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="f840cba4-25dd-403f-800a-46455ecdd951" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="1a4467e9-a185-478e-b4d1-2e6ee799b081" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="2e8b2faa-bd8d-4308-8de8-22c4271509a9" name="Decode" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b8a3f4cf-54d5-4e26-aaec-83342006488c" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="376ec1eb-fb16-4dc4-ac03-3ca12f2d3ae2" name="Message" direction="In" isUnique="false">
+                  <elementDefinition Id="63800946-7096-4fd6-85c1-232e36f2709f" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="856aa478-ced4-4a10-8bda-a661db41d180" name="DipMessageFormat" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e1b7ed3b-02cd-4e93-9693-b6e2d53f1739" />
+        <suppliersInternal>
+          <interfaceRealization Id="e007ef9e-4cb6-4875-bc63-88b67ddafc18">
+            <interfaceMoniker Id="159dbe6c-e47a-4ff1-8a69-284d2b5d51f5" LastKnownName="IMessageFormat" />
+            <elementDefinition Id="db4ff1fb-f9d2-4558-a994-dce2afa9fcc1" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="09b8436a-a7b1-42a2-8e0b-abc7f1e2a588" name="Encode" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="9a3e34d7-91b4-49d9-ad84-ee323fc8ff77" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="25aac3f5-9274-4eaa-aad0-f57a24dc2bba" name="byte[]" direction="In" isUnique="false">
+                  <elementDefinition Id="acc22380-5dc6-46f6-bf7a-9c6744a0a143" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="e783ba07-73e0-485f-907a-311ad1fab9b0" name="Decode" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="1b58eb0a-523a-406a-86a1-d700fcfee831" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="cb172b89-c8f0-4ae1-85c5-0e422ae3f03b" name="Message" direction="In" isUnique="false">
+                  <elementDefinition Id="f901b5ad-4d26-4c09-9bb4-cc93d66ce2bf" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="9876d19f-7a25-421a-a6e0-cf8e643425c6" name="Message" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="63167ce4-32e2-4cb1-98cc-6761d8874a64" />
+        <targetEnds>
+          <association Id="d7590533-08b5-4ac0-a589-9604c8b777e3" isDerived="false" sourceEndRoleName="Message" targetEndRoleName="MessageOpCode" isLeaf="false" isAbstract="false">
+            <enumerationMoniker Id="d7653ff0-e0d3-4308-a991-b08f069398c9" LastKnownName="MessageOpCode" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="037bcb05-3f65-49e0-9713-56dd6d3ae15a" name="Message" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="d535cf9b-e224-40f3-8b7a-ccb4eba3f6df" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="2c92e251-f461-4aad-aa63-a3767eccea97" name="MessageOpCode" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <elementDefinition Id="95c33802-12e1-4173-888c-740313f2a66f" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="99061874-da0a-426d-88ba-4cf9eb29a930" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="1c441edd-16a0-4406-a620-464630e07964" name="SequenceNumber" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="f0606028-4d4f-48a2-b78a-3ec9eab185fb" />
+          </property>
+          <property Id="70dbb00f-59fd-485b-bd11-93579e8e3258" name="OpCode" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="eb4060bb-5564-4f11-a1cf-fba713f0385e" />
+          </property>
+          <property Id="b5392906-10a2-4dd1-b546-53368ebf0cde" name="Parameters" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="abd856a4-2662-4110-81f3-e34c7200b0d3" />
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <enumeration Id="d7653ff0-e0d3-4308-a991-b08f069398c9" name="MessageOpCode" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="fc5b5f78-edbf-429b-91aa-1d3a9cb2b9cc" />
+      </enumeration>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="72965ee7-dc2c-43d7-ac58-39079008fb62" name="Demotic.Models">
+    <elementDefinition Id="3b376362-b474-40af-9fec-514a7ffc43e4" />
+  </package>
+</logicalClassDesignerModel>

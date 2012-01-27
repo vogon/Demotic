@@ -6,26 +6,18 @@ using System.Text;
 
 using Demotic.Core;
 using Demotic.Core.ObjectSystem;
+using Demotic.Network;
 
 namespace Demotic.Server
 {
-    internal delegate void RequestPendingEvent(UserAction action);
+    internal delegate void MessagePendingEvent(Message msg);
 
     internal interface IPresentation
     {
         void Start();
 
-        IPresentationClient AwaitNextConnection();
+        MessageChannel AwaitNextConnection();
 
         void Stop();
-    }
-
-    internal interface IPresentationClient
-    {
-        event RequestPendingEvent RequestPending;
-
-        void PutMessage(string message);
-
-        void PutObject(DObject obj);
     }
 }

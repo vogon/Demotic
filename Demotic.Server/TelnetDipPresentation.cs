@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Demotic.Core.ObjectSystem;
-using Demotic.Dip;
+using Demotic.Network;
 
 namespace Demotic.Server
 {
@@ -24,9 +24,13 @@ namespace Demotic.Server
             _server.Start();
         }
 
-        public IPresentationClient AwaitNextConnection()
+        public MessageChannel AwaitNextConnection()
         {
-            return new TelnetDipPresentation.Client(_server.AcceptTcpClient());
+            TcpClient tcpClient = _server.AcceptTcpClient();
+
+            var xport = new TcpMessageTransport(tcpClient);
+            var format = new DipMessageFormat();
+            return new MessageChannel(xport, format);
         }
 
         public void Stop()

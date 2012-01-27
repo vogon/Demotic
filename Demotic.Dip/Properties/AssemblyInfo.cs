@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Demotic.Dip")]
+[assembly: AssemblyTitle("Demotic.Network")]
 [assembly: AssemblyDescription("Demotic Interchange Protocol module for Demotic")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Demotic.Dip")]
+[assembly: AssemblyProduct("Demotic.Network")]
 [assembly: AssemblyCopyright("Copyright © Colin Bayer 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: InternalsVisibleTo("Demotic.Dip.Test")]
+[assembly: InternalsVisibleTo("Demotic.Network.Test")]

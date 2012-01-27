@@ -11,7 +11,7 @@ namespace Demotic.Server
         {
             _workQueue = new Queue<WorkItem>();
         }
-
+        
         public void Start()
         {
             _canceler = new CancellationTokenSource();
@@ -20,10 +20,10 @@ namespace Demotic.Server
                 TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        public void Dispatch(UserAction request, IPresentationClient asClient)
+        public void Dispatch(UserAction request, RequestContext context)
         {
             Console.WriteLine("enqueuing request on work queue");
-            _workQueue.Enqueue(new WorkItem { Issuer = asClient, Request = request });
+            _workQueue.Enqueue(new WorkItem { Issuer = context, Request = request });
         }
 
         public void Stop()
@@ -35,7 +35,7 @@ namespace Demotic.Server
 
         private struct WorkItem
         {
-            public IPresentationClient Issuer { get; set; }
+            public RequestContext Issuer { get; set; }
             public UserAction Request { get; set; }
         }
 
