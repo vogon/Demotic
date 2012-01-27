@@ -18,7 +18,6 @@ namespace Demotic.Server
         public Server()
         {
             _personalities = new List<IPresentation>();
-            //_clients = new List<IPresentationClient>();
             _channels = new List<MessageChannel>();
             _worker = new Worker();
 
@@ -35,16 +34,11 @@ namespace Demotic.Server
             {
                 MessageChannel newChannel = personality.AwaitNextConnection();
                 Console.WriteLine("accepted");
-                //_clients.Add(newContext);
                 _channels.Add(newChannel);
 
-                // todo: fix
-                RequestContext clientContext = new RequestContext(newChannel, 1);
-
-                newChannel.MessageReceived += ((msg) => MakeActionAndDispatch(msg, clientContext));
-                newChannel.ChannelClosed += (() => OnChannelClosed(newChannel));
                 // TODO: we're going to need to maintain a list of "canonical" clients for each personality at some point
-                //newContext.RequestPending += ((req) => _worker.Dispatch(req, null));
+                newChannel.MessageReceived += ((msg) => MakeActionAndDispatch(msg, newChannel));
+                newChannel.ChannelClosed += (() => OnChannelClosed(newChannel));
             }
         }
 
@@ -106,9 +100,10 @@ namespace Demotic.Server
             }
         }
 
-        private void MakeActionAndDispatch(Message msg, RequestContext context)
+        private void MakeActionAndDispatch(Message msg, MessageChannel channel)
         {
             UserAction request = null;
+            RequestContext context = new RequestContext(channel, msg.SequenceNumber);
 
             if (msg.OpCode == MessageOpCode.GetObject)
             {
@@ -153,7 +148,6 @@ namespace Demotic.Server
         private List<MessageChannel> _channels;
 
         private List<IPresentation> _personalities;
-        //private List<IPresentationClient> _clients;
 
         private Worker _worker;
     }
