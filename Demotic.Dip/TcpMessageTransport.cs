@@ -39,13 +39,30 @@ namespace Demotic.Network
 
         private void OnReceive(IAsyncResult ar)
         {
-            int bytesReceived = _client.Client.EndReceive(ar);
+            int bytesReceived;
+
+            try
+            {
+                bytesReceived = _client.Client.EndReceive(ar);
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode == SocketError.ConnectionReset)
+                {
+                    SignalClosed();
+                    return;
+                }
+                else
+                {
+                    throw e;
+                }
+            }
 
             if (bytesReceived == 0)
             {
                 // connection closed by remote host; signal that if we have
                 // a registered callback.
-                if (ConnectionClosed != null) ConnectionClosed();
+                SignalClosed();
                 return;
             }
 
@@ -59,6 +76,11 @@ namespace Demotic.Network
 
             // and start the cycle again.
             AwaitReceive();
+        }
+
+        private void SignalClosed()
+        {
+            if (ConnectionClosed != null) ConnectionClosed();
         }
 
         private IAsyncResult _pendingReceiveResult;

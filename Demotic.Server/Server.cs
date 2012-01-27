@@ -42,6 +42,7 @@ namespace Demotic.Server
                 RequestContext clientContext = new RequestContext(newChannel, 1);
 
                 newChannel.MessageReceived += ((msg) => MakeActionAndDispatch(msg, clientContext));
+                newChannel.ChannelClosed += (() => OnChannelClosed(newChannel));
                 // TODO: we're going to need to maintain a list of "canonical" clients for each personality at some point
                 //newContext.RequestPending += ((req) => _worker.Dispatch(req, null));
             }
@@ -141,6 +142,12 @@ namespace Demotic.Server
 
             Debug.Assert(request != null);
             _worker.Dispatch(request, context);
+        }
+
+        private void OnChannelClosed(MessageChannel channel)
+        {
+            Console.WriteLine("channel closed.");
+            _channels.Remove(channel);
         }
 
         private List<MessageChannel> _channels;
