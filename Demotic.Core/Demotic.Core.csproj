@@ -48,7 +48,6 @@
     <Compile Include="ObjectSystem\DObject.cs" />
     <Compile Include="ObjectSystem\DRecord.cs" />
     <Compile Include="ObjectSystem\DString.cs" />
-    <Compile Include="ObjectSystem\IDObjectVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="World.cs" />

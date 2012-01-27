@@ -75,11 +75,6 @@ namespace Demotic.Core.ObjectSystem
             get { return (double)_value; }
         }
 
-        public override T Accept<T>(IDObjectVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
         private decimal _value;
     }
 }
