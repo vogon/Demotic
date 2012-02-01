@@ -24,7 +24,6 @@ namespace Demotic.Server
                 AckNumber = this._ackNumber
             };
 
-            msg.Attributes = new Dictionary<string, object>();
             msg.Attributes["object"] = obj;
 
             _channel.SendMessage(msg);

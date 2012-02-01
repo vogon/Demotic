@@ -5,15 +5,15 @@ using System.Text;
 
 namespace Demotic.Network
 {
-    internal class Bencode
+    internal class Bencoder
     {
-        public Bencode()
+        public Bencoder()
         {
             _fragments = new LinkedList<byte[]>();
             _nestingStack = new Stack<BencodingComplexType>();
         }
 
-        public Bencode StartDictionary()
+        public Bencoder StartDictionary()
         {
             _nestingStack.Push(BencodingComplexType.Dictionary);
             InternalWriteString("d");
@@ -21,7 +21,7 @@ namespace Demotic.Network
             return this;
         }
 
-        public Bencode StartList()
+        public Bencoder StartList()
         {
             _nestingStack.Push(BencodingComplexType.List);
             InternalWriteString("l");
@@ -29,14 +29,14 @@ namespace Demotic.Network
             return this;
         }
 
-        public Bencode Integer(long value)
+        public Bencoder Integer(long value)
         {
             InternalWriteString("i{0}e", value);
 
             return this;
         }
 
-        public Bencode ByteString(byte[] value)
+        public Bencoder ByteString(byte[] value)
         {
             InternalWriteString("{0}:", value.Length);
             InternalWriteByteArray(value);
@@ -44,7 +44,7 @@ namespace Demotic.Network
             return this;
         }
 
-        public Bencode FinishDictionary()
+        public Bencoder FinishDictionary()
         {
             if (_nestingStack.Count == 0 || 
                 _nestingStack.Pop() != BencodingComplexType.Dictionary)
@@ -57,7 +57,7 @@ namespace Demotic.Network
             return this;
         }
 
-        public Bencode FinishList()
+        public Bencoder FinishList()
         {
             if (_nestingStack.Count == 0 || 
                 _nestingStack.Pop() != BencodingComplexType.List)

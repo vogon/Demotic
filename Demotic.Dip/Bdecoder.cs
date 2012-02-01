@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace Demotic.Network
 {
-    internal class Bdecode
+    internal class Bdecoder
     {
-        public Bdecode(byte[] data)
+        public Bdecoder(byte[] data)
         {
             _data = data;
             _offset = 0;
@@ -20,7 +20,7 @@ namespace Demotic.Network
         {
             Eof = 0,
             Integer,
-            Bytestring,
+            ByteString,
             StartDictionary,
             EndDictionary,
             StartList,
@@ -51,7 +51,7 @@ namespace Demotic.Network
                 {
                     _offset = next;
                     _bytestringValue = value;
-                    _nodeType = NodeType.Bytestring;
+                    _nodeType = NodeType.ByteString;
                 }
             }
             else if (ch == (byte)'i')
@@ -131,11 +131,11 @@ namespace Demotic.Network
             }
         }
 
-        public byte[] BytestringValue
+        public byte[] ByteStringValue
         {
             get
             {
-                if (_nodeType != NodeType.Bytestring)
+                if (_nodeType != NodeType.ByteString)
                 {
                     throw new InvalidOperationException();
                 }

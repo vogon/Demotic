@@ -50,10 +50,10 @@ namespace Demotic.Client
             // should really dispose stuff here
         }
 
-        public void SendMessage(Message msg, object context)
+        public void SendMessage(Message msg, object context, ResponseReceivedHandler responseHandler)
         {
             _unacked.Add(msg.SequenceNumber,
-                new AckContext { Request = msg, Context = context });
+                new AckContext { Request = msg, Context = context, Handler = responseHandler });
             _channel.SendMessage(msg);
         }
 
@@ -63,9 +63,9 @@ namespace Demotic.Client
             {
                 AckContext req = _unacked[msg.AckNumber];
 
-                if (ResponseReceived != null)
+                if (req.Handler != null)
                 {
-                    ResponseReceived(this, new ResponseReceivedEventArgs
+                    req.Handler(this, new ResponseReceivedEventArgs 
                         {
                             Request = req.Request,
                             Response = msg,
@@ -88,12 +88,12 @@ namespace Demotic.Client
             }
         }
 
-        public event ResponseReceivedHandler ResponseReceived;
-
         private struct AckContext
         {
             public Message Request { get; set; }
             public object Context { get; set; }
+
+            public ResponseReceivedHandler Handler { get; set; }
         }
 
         private Dictionary<int, AckContext> _unacked;

@@ -7,8 +7,15 @@ using Demotic.Core.ObjectSystem;
 
 namespace Demotic.Network
 {
-    public struct Message
+    public class Message
     {
+        public Message()
+        {
+            SequenceNumber = -1;
+
+            Attributes = new Dictionary<string, object>();
+        }
+
         public int SequenceNumber { get; set; }
         public int AckNumber { get; set; }
 

@@ -65,6 +65,11 @@ namespace Demotic.Core.ObjectSystem
             return a._value <= b._value;
         }
 
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
+
         public int IntValue
         {
             get { return (int)_value; }

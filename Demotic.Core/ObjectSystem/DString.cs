@@ -48,6 +48,11 @@ namespace Demotic.Core.ObjectSystem
             }
         }
 
+        public override string ToString()
+        {
+            return Value;
+        }
+
         public override int GetHashCode()
         {
             return Value.GetHashCode();

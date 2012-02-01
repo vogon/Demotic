@@ -7,7 +7,6 @@ namespace Demotic.Network
 {
     public enum MessageOpCode
     {
-        Unknown = -1,
         Quote = 1,
         OK = 2,
         NG = 3,

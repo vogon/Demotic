@@ -26,36 +26,18 @@ namespace Demotic.Client
         public MainWindow()
         {
             InitializeComponent();
-            ScrollbackTextBox.Document.Blocks.Clear();
 
-            _client = new Client("localhost", 17717);
-            _client.Start();
+            // TODO: add connect/disconnect interface
+            DemoticApp app = (DemoticApp)DemoticApp.Current;
+            app.Connect("localhost", 17717);
 
-            _view = new ClientView(_client);
-        }
+            _dipConsole = new DipConsolePage();
 
-        private void promptTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            DipMessageFormat format = new DipMessageFormat();
-
-            if (e.Text == "\r")
-            {
-                int consumed = 0;
-                Message? msg = format.Decode(Encoding.UTF8.GetBytes(PromptTextBox.Text), out consumed);
-                Block blk;
-
-                _view.Send(msg.Value, out blk);
-
-                ScrollbackTextBox.Document.Blocks.Add(blk);
-                ScrollbackTextBox.ScrollToEnd();
-
-                PromptTextBox.Clear();
-
-                e.Handled = true;
-            }
+            ContentFrame.Navigate(_dipConsole);
         }
 
         private Client _client;
-        private ClientView _view;
+
+        private DipConsolePage _dipConsole;
     }
 }

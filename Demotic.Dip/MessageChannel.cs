@@ -26,9 +26,19 @@ namespace Demotic.Network
 
         public void SendMessage(Message msg)
         {
-            // get next sequence number and put it into msg.
-            msg.SequenceNumber = _nextSeq;
-            _nextSeq++;
+            if (msg.SequenceNumber < 0)
+            {
+                // get next sequence number and put it into msg.
+                msg.SequenceNumber = _nextSeq;
+                _nextSeq++;
+            }
+            else if (msg.SequenceNumber >= _nextSeq)
+            {
+                // if something above this in the stack passes a sequence number
+                // in, we can't override its wishes because it might be using
+                // the sequence number to correlate requests with responses.
+                _nextSeq = msg.SequenceNumber + 1;
+            }
 
             byte[] payload = _format.Encode(msg);
 
@@ -45,11 +55,11 @@ namespace Demotic.Network
 
             try
             {
-                Message? msg = _format.Decode(_buffer.ToArray(), out bytesConsumed);
+                Message msg = _format.Decode(_buffer.ToArray(), out bytesConsumed);
 
                 if (msg != null)
                 {
-                    MessageReceived(msg.Value);
+                    MessageReceived(msg);
                     _buffer.RemoveRange(0, bytesConsumed);
                 }
                 else

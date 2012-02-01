@@ -30,6 +30,7 @@ namespace Demotic.Server
         public override void Execute()
         {
             Client.QuoteObject(Program.World.GlobalObjectRoot.Get(Path));
+            Client.Acknowledge();
         }
 
         private string Path { get; set; }
@@ -72,7 +73,7 @@ namespace Demotic.Server
             {
                 s.BindTo(Program.World);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // TODO: remove pokemon exception handling
                 Client.NegativeAcknowledge();

@@ -1,0 +1,14 @@
+﻿<Page x:Class="Demotic.Client.DipConsolePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+	Title="DipConsolePage">
+
+    <Grid>
+        <RichTextBox Height="249" HorizontalAlignment="Left" IsReadOnly="True" Margin="10,10,0,0" Name="ScrollbackTextBox" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Width="278" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="10,265,0,0" Name="PromptTextBox" VerticalAlignment="Top" Width="278" PreviewTextInput="PromptTextBox_PreviewTextInput" />
+    </Grid>
+</Page>

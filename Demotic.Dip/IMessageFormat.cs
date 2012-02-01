@@ -19,7 +19,7 @@ namespace Demotic.Network
         ///     A Message object representing the message in payload, or null if
         ///     the encoding of the payload is otherwise valid but terminates prematurely.
         /// </returns>
-        Message? Decode(byte[] payload, out int bytesConsumed);
+        Message Decode(byte[] payload, out int bytesConsumed);
         byte[] Encode(Message msg);
     }
 }

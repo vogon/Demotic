@@ -15,9 +15,9 @@ namespace Demotic.Network
         private const string OpCodeFieldName = "op";
 
         /// <see cref="IMessageFormat.Decode"/>
-        public Message? Decode(byte[] payload, out int bytesConsumed)
+        public Message Decode(byte[] payload, out int bytesConsumed)
         {
-            Bdecode decoder = new Bdecode(payload);
+            Bdecoder decoder = new Bdecoder(payload);
             Stack<DecodingFrame> frames = new Stack<DecodingFrame>();
             
             while (true)
@@ -27,11 +27,11 @@ namespace Demotic.Network
 
                 switch (nodeType)
                 {
-                    case Bdecode.NodeType.Bytestring:
-                        top.InsertBytestring(decoder.BytestringValue);
+                    case Bdecoder.NodeType.ByteString:
+                        top.InsertBytestring(decoder.ByteStringValue);
                         break;
 
-                    case Bdecode.NodeType.EndDictionary:
+                    case Bdecoder.NodeType.EndDictionary:
                         DecodingFrame child = frames.Pop();
                         DecodingFrame parent = frames.Count > 0 ? frames.Peek() : null;
 
@@ -49,18 +49,18 @@ namespace Demotic.Network
 
                         break;
 
-                    case Bdecode.NodeType.EndList:
+                    case Bdecoder.NodeType.EndList:
                         Debug.Fail("whaaaaaaaaat");
                         break;
 
-                    case Bdecode.NodeType.Error:
+                    case Bdecoder.NodeType.Error:
                         throw new BadBencodingException("blah");
 
-                    case Bdecode.NodeType.Integer:
+                    case Bdecoder.NodeType.Integer:
                         top.InsertInteger(decoder.IntegerValue);
                         break;
 
-                    case Bdecode.NodeType.StartDictionary:
+                    case Bdecoder.NodeType.StartDictionary:
                         if (frames.Count == 0)
                         {
                             frames.Push(new MessageToplevelFrame());
@@ -72,11 +72,11 @@ namespace Demotic.Network
                                                 
                         break;
 
-                    case Bdecode.NodeType.StartList:
+                    case Bdecoder.NodeType.StartList:
                         Debug.Fail("oh nooooo");
                         break;
 
-                    case Bdecode.NodeType.Eof:
+                    case Bdecoder.NodeType.Eof:
                         // expected a node here, but didn't get one. return "premature eof".
                         bytesConsumed = 0;
                         return null;
@@ -99,7 +99,7 @@ namespace Demotic.Network
         {
             public MessageToplevelFrame()
             {
-                _msg.Attributes = new Dictionary<string, object>();
+                _msg = new Message();
             }
 
             public override void InsertInteger(long i)
@@ -238,7 +238,7 @@ namespace Demotic.Network
         
         public byte[] Encode(Message msg)
         {
-            Bencode encoder = new Bencode();
+            Bencoder encoder = new Bencoder();
             Encoding textEncoding = Encoding.UTF8;
 
             encoder.StartDictionary();
