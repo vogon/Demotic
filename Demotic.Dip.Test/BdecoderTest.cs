@@ -30,7 +30,6 @@ namespace Demotic.Network.Test
             Bdecoder d = new Bdecoder(encoded);
 
             Assert.AreEqual(Bdecoder.NodeType.Eof, d.Next());
-            Assert.AreEqual(7, d.NextOffset);
         }
 
         [TestMethod]
@@ -40,7 +39,6 @@ namespace Demotic.Network.Test
             Bdecoder d = new Bdecoder(encoded);
 
             Assert.AreEqual(Bdecoder.NodeType.Eof, d.Next());
-            Assert.AreEqual(2, d.NextOffset);
         }
 
         [TestMethod, ExpectedException(typeof(BadBencodingException))]
@@ -60,7 +58,7 @@ namespace Demotic.Network.Test
             Bdecoder d = new Bdecoder(encoded);
 
             Assert.AreEqual(Bdecoder.NodeType.Integer, d.Next());
-            Assert.AreEqual(427, d.IntegerValue);
+            Assert.AreEqual(expected, d.IntegerValue);
             Assert.AreEqual(5, d.NextOffset);
         }
 
@@ -73,68 +71,165 @@ namespace Demotic.Network.Test
             d.Next();
         }
 
-        //[TestMethod, ExpectedException(typeof(BadBencodingException))]
-        //public void TestDecodeIntegerHalfopen()
-        //{
-        //    byte[] encoded = Encoding.ASCII.GetBytes("i123");
-        //    int next;
+        [TestMethod]
+        public void TestDecodeIntegerHalfopen()
+        {
+            byte[] encoded = Utils.Bs("i123");
+            Bdecoder d = new Bdecoder(encoded);
 
-        //    long actual = (long)Bencoding.Decode(encoded, out next);
-        //}
+            Assert.AreEqual(Bdecoder.NodeType.Eof, d.Next());
+        }
 
-        //[TestMethod]
-        //public void TestDecodeDictionary()
-        //{
-        //    byte[] encoded = Encoding.ASCII.GetBytes("forewordd3:foo3:barepostscript");
-        //    int start = 8;
-        //    int next;
+        [TestMethod]
+        public void TestDecodeDictionary()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("d3:foo3:barepostscript");
+            Bdecoder d = new Bdecoder(encoded);
 
-        //    var actual = (Dictionary<object, object>)Bencoding.Decode(encoded, start, out next);
+            Assert.AreEqual(Bdecoder.NodeType.StartDictionary, d.Next());
 
-        //    Assert.AreEqual(actual.Count, 1);
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("foo"), d.ByteStringValue);
 
-        //    foreach (var kvp in actual)
-        //    {
-        //        Assert.IsTrue(kvp.Key is byte[]);
-        //        BencodingUtils.AssertBytewiseIdentical((byte[])kvp.Key, Utils.Bs("foo"));
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("bar"), d.ByteStringValue);
 
-        //        Assert.IsTrue(kvp.Value is byte[]);
-        //        BencodingUtils.AssertBytewiseIdentical((byte[])kvp.Value, Utils.Bs("bar"));
-        //    }
+            Assert.AreEqual(Bdecoder.NodeType.EndDictionary, d.Next());
+            Assert.AreEqual(12, d.NextOffset);
+        }
 
-        //    Assert.AreEqual(next, start + 12);
-        //}
+        [TestMethod]
+        public void TestDecodeDictionaryEmpty()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("depostscript");
+            Bdecoder d = new Bdecoder(encoded);
 
-        //[TestMethod]
-        //public void TestDecodeDictionaryEmpty()
-        //{
-        //    byte[] encoded = Encoding.ASCII.GetBytes("foreworddepostscript");
-        //    int start = 8;
-        //    int next;
+            Assert.AreEqual(Bdecoder.NodeType.StartDictionary, d.Next());
 
-        //    var actual = (Dictionary<object, object>)Bencoding.Decode(encoded, start, out next);
+            Assert.AreEqual(Bdecoder.NodeType.EndDictionary, d.Next());
+            Assert.AreEqual(2, d.NextOffset);
+        }
 
-        //    Assert.AreEqual(actual.Count, 0);
-        //    Assert.AreEqual(next, start + 2);
-        //}
+        [TestMethod]
+        public void TestDecodeDictionaryHalfOpen()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("d5:sushii85e");
+            Bdecoder d = new Bdecoder(encoded);
 
-        //[TestMethod, ExpectedException(typeof(BadBencodingException))]
-        //public void TestDecodeDictionaryUnpairedKey()
-        //{
-        //    byte[] encoded = Encoding.ASCII.GetBytes("di99ee");
-        //    int next;
+            Assert.AreEqual(Bdecoder.NodeType.StartDictionary, d.Next());
 
-        //    var actual = Bencoding.Decode(encoded, out next);
-        //}
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("sushi"), d.ByteStringValue);
 
-        //[TestMethod, ExpectedException(typeof(BadBencodingException))]
-        //public void TestDecodeDictionaryHalfOpen()
-        //{
-        //    byte[] encoded = Encoding.ASCII.GetBytes("d5:sushii85e");
-        //    int next;
+            Assert.AreEqual(Bdecoder.NodeType.Integer, d.Next());
 
-        //    var actual = Bencoding.Decode(encoded, out next);
-        //}
+            Assert.AreEqual(Bdecoder.NodeType.Eof, d.Next());
+        }
+
+        [TestMethod]
+        public void TestDecodeDNumber()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("Nn123.45eecomplex");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartDNumber, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.Number, d.Next());
+            Assert.AreEqual(123.45m, d.NumberValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.EndDNumber, d.Next());
+            Assert.AreEqual(10, d.NextOffset);
+        }
+
+        [TestMethod]
+        public void TestDecodeDString()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("S4:testesisyphean");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartDString, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("test"), d.ByteStringValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.EndDString, d.Next());
+            Assert.AreEqual(8, d.NextOffset);
+        }
+
+        [TestMethod]
+        public void TestDecodeDStringEmpty()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("S0:e");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartDString, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs(""), d.ByteStringValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.EndDString, d.Next());
+            Assert.AreEqual(4, d.NextOffset);
+        }
+
+        [TestMethod]
+        public void TestDecodeDRecord()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("R4:safe6:secureeoffthe");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartDRecord, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("safe"), d.ByteStringValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("secure"), d.ByteStringValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.EndDRecord, d.Next());
+            Assert.AreEqual(16, d.NextOffset);
+        }
+
+        [TestMethod]
+        public void TestDecodeDRecordEmpty()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("Re");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartDRecord, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.EndDRecord, d.Next());
+            Assert.AreEqual(2, d.NextOffset);
+        }
+
+        [TestMethod]
+        public void TestDecodeMetadata()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("m4:data4:metae");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartMetadata, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("data"), d.ByteStringValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.ByteString, d.Next());
+            Utils.AssertBytewiseIdentical(Utils.Bs("meta"), d.ByteStringValue);
+
+            Assert.AreEqual(Bdecoder.NodeType.EndMetadata, d.Next());
+            Assert.AreEqual(14, d.NextOffset);
+        }
+
+        [TestMethod]
+        public void TestDecodeMetadataEmpty()
+        {
+            byte[] encoded = Encoding.ASCII.GetBytes("me");
+            Bdecoder d = new Bdecoder(encoded);
+
+            Assert.AreEqual(Bdecoder.NodeType.StartMetadata, d.Next());
+
+            Assert.AreEqual(Bdecoder.NodeType.EndMetadata, d.Next());
+            Assert.AreEqual(2, d.NextOffset);
+        }
 
         //[TestMethod]
         //public void TestDecodeList()

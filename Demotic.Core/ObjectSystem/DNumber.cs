@@ -25,6 +25,11 @@ namespace Demotic.Core.ObjectSystem
         // NOTE: the Roslyn CTP is missing operator overloading support.  (sad face.)
         // these operators are inaccessible from scripts until a later beta or perhaps
         // Dev11 ship.
+        public static implicit operator DNumber(decimal dec)
+        {
+            return new DNumber(dec);
+        }
+
         public static implicit operator DNumber(int i)
         {
             return new DNumber(i);
@@ -37,12 +42,12 @@ namespace Demotic.Core.ObjectSystem
 
         public static explicit operator int(DNumber dn)
         {
-            return dn.IntValue;
+            return (int)dn.Value;
         }
 
         public static explicit operator double(DNumber dn)
         {
-            return dn.DoubleValue;
+            return (double)dn.Value;
         }
 
         public static DNumber operator -(DNumber a)
@@ -70,14 +75,9 @@ namespace Demotic.Core.ObjectSystem
             return _value.ToString();
         }
 
-        public int IntValue
+        public decimal Value
         {
-            get { return (int)_value; }
-        }
-
-        public double DoubleValue
-        {
-            get { return (double)_value; }
+            get { return _value; }
         }
 
         private decimal _value;

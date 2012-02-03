@@ -29,9 +29,40 @@ namespace Demotic.Network
             return this;
         }
 
+        public Bencoder StartDNumber()
+        {
+            _nestingStack.Push(BencodingComplexType.DNumber);
+            InternalWriteString("N");
+
+            return this;
+        }
+
+        public Bencoder StartDString()
+        {
+            _nestingStack.Push(BencodingComplexType.DString);
+            InternalWriteString("S");
+
+            return this;
+        }
+
+        public Bencoder StartDRecord()
+        {
+            _nestingStack.Push(BencodingComplexType.DRecord);
+            InternalWriteString("R");
+
+            return this;
+        }
+
         public Bencoder Integer(long value)
         {
             InternalWriteString("i{0}e", value);
+
+            return this;
+        }
+
+        public Bencoder Number(decimal value)
+        {
+            InternalWriteString("n{0}e", value);
 
             return this;
         }
@@ -44,10 +75,10 @@ namespace Demotic.Network
             return this;
         }
 
-        public Bencoder FinishDictionary()
+        private Bencoder Finish(BencodingComplexType expectedType)
         {
-            if (_nestingStack.Count == 0 || 
-                _nestingStack.Pop() != BencodingComplexType.Dictionary)
+            if (_nestingStack.Count == 0 ||
+                _nestingStack.Pop() != expectedType)
             {
                 throw new BadBencodingException("not in a dictionary");
             }
@@ -57,17 +88,29 @@ namespace Demotic.Network
             return this;
         }
 
+        public Bencoder FinishDictionary()
+        {
+            return Finish(BencodingComplexType.Dictionary);
+        }
+
         public Bencoder FinishList()
         {
-            if (_nestingStack.Count == 0 || 
-                _nestingStack.Pop() != BencodingComplexType.List)
-            {
-                throw new BadBencodingException("not in a list");
-            }
+            return Finish(BencodingComplexType.List);
+        }
 
-            InternalWriteString("e");
+        public Bencoder FinishDNumber()
+        {
+            return Finish(BencodingComplexType.DNumber);
+        }
 
-            return this;
+        public Bencoder FinishDString()
+        {
+            return Finish(BencodingComplexType.DString);
+        }
+
+        public Bencoder FinishDRecord()
+        {
+            return Finish(BencodingComplexType.DRecord);
         }
 
         public byte[] Encoded

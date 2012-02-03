@@ -8,11 +8,13 @@ using Demotic.Core.ObjectSystem;
 
 namespace Demotic.Network
 {
-    public class DipMessageFormat : IMessageFormat
+    public partial class DipMessageFormat : IMessageFormat
     {
         private const string SequenceNumberFieldName = "seq";
         private const string AckNumberFieldName = "to";
         private const string OpCodeFieldName = "op";
+
+        private static readonly Encoding TextEncoding = Encoding.UTF8;
 
         /// <see cref="IMessageFormat.Decode"/>
         public Message Decode(byte[] payload, out int bytesConsumed)
@@ -32,6 +34,9 @@ namespace Demotic.Network
                         break;
 
                     case Bdecoder.NodeType.EndDictionary:
+                    case Bdecoder.NodeType.EndDNumber:
+                    case Bdecoder.NodeType.EndDRecord:
+                    case Bdecoder.NodeType.EndDString:
                         DecodingFrame child = frames.Pop();
                         DecodingFrame parent = frames.Count > 0 ? frames.Peek() : null;
 
@@ -53,11 +58,12 @@ namespace Demotic.Network
                         Debug.Fail("whaaaaaaaaat");
                         break;
 
-                    case Bdecoder.NodeType.Error:
-                        throw new BadBencodingException("blah");
-
                     case Bdecoder.NodeType.Integer:
                         top.InsertInteger(decoder.IntegerValue);
+                        break;
+
+                    case Bdecoder.NodeType.Number:
+                        top.InsertNumber(decoder.NumberValue);
                         break;
 
                     case Bdecoder.NodeType.StartDictionary:
@@ -67,13 +73,26 @@ namespace Demotic.Network
                         }
                         else
                         {
-                            frames.Push(new DRecordFrame());
+                            Debug.Assert(false);
+                            //frames.Push(new DRecordFrame());
                         }
                                                 
                         break;
 
                     case Bdecoder.NodeType.StartList:
                         Debug.Fail("oh nooooo");
+                        break;
+
+                    case Bdecoder.NodeType.StartDNumber:
+                        frames.Push(new DNumberFrame());
+                        break;
+
+                    case Bdecoder.NodeType.StartDRecord:
+                        frames.Push(new DRecordFrame());
+                        break;
+
+                    case Bdecoder.NodeType.StartDString:
+                        frames.Push(new DStringFrame());
                         break;
 
                     case Bdecoder.NodeType.Eof:
@@ -88,9 +107,25 @@ namespace Demotic.Network
         {
             public DecodingFrame() { }
 
-            public abstract void InsertInteger(long i);
-            public abstract void InsertBytestring(byte[] str);
-            public abstract void InsertObject(DObject obj);
+            public virtual void InsertInteger(long i)
+            {
+                Debug.Assert(false, "expectation failed");
+            }
+
+            public virtual void InsertBytestring(byte[] str)
+            {
+                Debug.Assert(false, "expectation failed");
+            }
+
+            public virtual void InsertObject(DObject obj)
+            {
+                Debug.Assert(false, "expectation failed");
+            }
+
+            public virtual void InsertNumber(decimal dec)
+            {
+                Debug.Assert(false, "expectation failed");
+            }
 
             public abstract object Realize();
         }
@@ -125,7 +160,7 @@ namespace Demotic.Network
                     else
                     {
                         Debug.Assert(_key is string);
-                        _msg.Attributes[(string)_key] = (DNumber)i;
+                        _msg.Attributes[(string)_key] = (long)i;
                     }
 
                     _key = null;
@@ -173,6 +208,36 @@ namespace Demotic.Network
             private Message _msg;
         }
 
+        private class DNumberFrame : DecodingFrame
+        {
+            public override void InsertNumber(decimal dec)
+            {
+                _n = dec;
+            }
+
+            public override object Realize()
+            {
+                return _n;
+            }
+
+            private DNumber _n;
+        }
+
+        private class DStringFrame : DecodingFrame
+        {
+            public override void InsertBytestring(byte[] str)
+            {
+                _str = Encoding.UTF8.GetString(str);
+            }
+
+            public override object Realize()
+            {
+                return _str;
+            }
+
+            private DString _str;
+        }
+
         private class DRecordFrame : DecodingFrame
         {
             public DRecordFrame()
@@ -180,51 +245,31 @@ namespace Demotic.Network
                 _rec = new DRecord();
             }
 
-            public override void InsertInteger(long i)
-            {
-                if (_key == null)
-                {
-                    _key = i;
-                }
-                else
-                {
-                    Debug.Assert(_key is string);
-                    _rec[(string)_key] = (DNumber)i;
-
-                    _key = null;
-                }
-            }
-
             public override void InsertBytestring(byte[] str)
             {
                 string s = new string(Encoding.UTF8.GetChars(str));
 
-                if (_key == null)
-                {
-                    _key = s;
-                }
-                else
-                {
-                    Debug.Assert(_key is string);
-                    _rec[(string)_key] = new DString(s);
-                    
-                    _key = null;
-                }
+                Debug.Assert(_key == null);
+
+                _key = s;
             }
 
             public override void InsertObject(DObject obj)
             {
-                if (_key == null)
-                {
-                    _key = obj;
-                }
-                else
-                {
-                    Debug.Assert(_key is string);
-                    _rec[(string)_key] = obj;
-                    
-                    _key = null;                    
-                }
+                Debug.Assert(_key != null);
+                Debug.Assert(_key is string);
+
+                _rec[(string)_key] = obj;
+                _key = null;
+            }
+
+            public override void InsertNumber(decimal dec)
+            {
+                Debug.Assert(_key != null);
+                Debug.Assert(_key is string);
+
+                _rec[(string)_key] = new DNumber(dec);
+                _key = null;
             }
 
             public override object Realize()
@@ -239,20 +284,19 @@ namespace Demotic.Network
         public byte[] Encode(Message msg)
         {
             Bencoder encoder = new Bencoder();
-            Encoding textEncoding = Encoding.UTF8;
 
             encoder.StartDictionary();
 
-            encoder.ByteString(textEncoding.GetBytes(SequenceNumberFieldName))
+            encoder.ByteString(TextEncoding.GetBytes(SequenceNumberFieldName))
                    .Integer(msg.SequenceNumber)
-                   .ByteString(textEncoding.GetBytes(AckNumberFieldName))
+                   .ByteString(TextEncoding.GetBytes(AckNumberFieldName))
                    .Integer(msg.AckNumber)
-                   .ByteString(textEncoding.GetBytes(OpCodeFieldName))
+                   .ByteString(TextEncoding.GetBytes(OpCodeFieldName))
                    .Integer((long)msg.OpCode);
 
             foreach (string k in msg.Attributes.Keys)
             {
-                encoder.ByteString(textEncoding.GetBytes(k));
+                encoder.ByteString(TextEncoding.GetBytes(k));
 
                 object value = msg.Attributes[k];
 
@@ -262,28 +306,25 @@ namespace Demotic.Network
                 }
                 else if (value is DNumber)
                 {
-                    encoder.Integer(((DNumber)value).IntValue);
+                    SerializeDNumber(encoder, (DNumber)value);
                 }
                 else if (value is string)
                 {
-                    encoder.ByteString(textEncoding.GetBytes((string)value));
+                    encoder.ByteString(TextEncoding.GetBytes((string)value));
                 }
                 else if (value is DString)
                 {
-                    encoder.ByteString(textEncoding.GetBytes((string)((DString)value)));
+                    SerializeDString(encoder, (DString)value);
                 }
-                else if (value is DObject)
+                else if (value is DRecord)
                 {
-                    // TODO: unstub
-                    encoder.ByteString(textEncoding.GetBytes("[oh god no]"));
+                    SerializeDRecord(encoder, (DRecord)value);
                 }
                 else
                 {
                     throw new NotImplementedException();
                 }
             }
-
-            // TODO: traverse rest of message
 
             encoder.FinishDictionary();
 

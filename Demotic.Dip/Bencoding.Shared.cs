@@ -9,5 +9,9 @@ namespace Demotic.Network
     {
         List,
         Dictionary,
+        DNumber,
+        DString,
+        DRecord,
+        Metadata
     }
 }

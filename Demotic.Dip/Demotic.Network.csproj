@@ -47,6 +47,7 @@
     <Compile Include="Bencoding.Shared.cs" />
     <Compile Include="ConsoleMessageTransport.cs" />
     <Compile Include="DipMessageFormat.cs" />
+    <Compile Include="DipMessageFormat.DObject.cs" />
     <Compile Include="IMessageFormat.cs" />
     <Compile Include="IMessageTransport.cs" />
     <Compile Include="Message.cs" />

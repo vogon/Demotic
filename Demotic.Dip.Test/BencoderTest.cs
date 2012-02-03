@@ -3,6 +3,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Demotic.Core.ObjectSystem;
 using Demotic.Network;
 
 namespace Demotic.Network.Test
@@ -90,6 +92,35 @@ namespace Demotic.Network.Test
         public void TestEncodeDictionaryEmpty()
         {
             AssertEncodesTo((e => e.StartDictionary().FinishDictionary()), "de");
+        }
+
+        [TestMethod]
+        public void TestEncodeDNumber()
+        {
+            AssertEncodesTo(
+                (e => e.StartDNumber().Number(123.45m).FinishDNumber()), 
+                "Nn123.45ee"
+                );
+        }
+
+        [TestMethod]
+        public void TestEncodeDString()
+        {
+            AssertEncodesTo(
+                (e => e.StartDString().ByteString(Utils.Bs("blah")).FinishDString()),
+                "S4:blahe"
+                );
+        }
+
+        [TestMethod]
+        public void TestEncodeDRecord()
+        {
+            AssertEncodesTo(
+                (e => e.StartDRecord().
+                            ByteString(Utils.Bs("a")).ByteString(Utils.Bs("b")).
+                        FinishDRecord()),
+                "R1:a1:be"
+                );
         }
     }
 }

@@ -25,7 +25,15 @@ namespace Demotic.Network
             EndDictionary,
             StartList,
             EndList,
-            Error
+            StartDNumber,
+            EndDNumber,
+            Number,
+            StartDString,
+            EndDString,
+            StartDRecord,
+            EndDRecord,
+            StartMetadata,
+            EndMetadata,
         }
 
         public NodeType Next()
@@ -39,6 +47,7 @@ namespace Demotic.Network
 
             if (IsAsciiDigit(ch))
             {
+                // bytestring: [length]:[payload] pair
                 int next;
                 byte[] value = DecodeBytestring(_data, _offset, out next);
 
@@ -56,6 +65,7 @@ namespace Demotic.Network
             }
             else if (ch == (byte)'i')
             {
+                // integer: i[value]e
                 int next;
                 long? value = DecodeInteger(_data, _offset, out next);
 
@@ -71,20 +81,69 @@ namespace Demotic.Network
                     _nodeType = NodeType.Integer;
                 }
             }
+            else if (ch == (byte)'n')
+            {
+                // "little DNumber": arbitrary-precision number, no metadata; n[value]e
+                int next;
+                decimal? value = DecodeNumber(_data, _offset, out next);
+
+                if (value == null)
+                {
+                    _offset = _data.Length;
+                    _nodeType = NodeType.Eof;
+                }
+                else
+                {
+                    _offset = next;
+                    _numberValue = value.Value;
+                    _nodeType = NodeType.Number;
+                }
+            }
             else if (ch == (byte)'l')
             {
+                // list: l[value]...e
                 _nestingStack.Push(BencodingComplexType.List);
                 _offset++;
                 _nodeType = NodeType.StartList;
             }
             else if (ch == (byte)'d')
             {
+                // dictionary: d[key][value]...e
                 _nestingStack.Push(BencodingComplexType.Dictionary);
                 _offset++;
                 _nodeType = NodeType.StartDictionary;
             }
+            else if (ch == (byte)'m')
+            {
+                // metadata dictionary: m[key][value]...e
+                _nestingStack.Push(BencodingComplexType.Metadata);
+                _offset++;
+                _nodeType = NodeType.StartMetadata;
+            }
+            else if (ch == (byte)'N')
+            {
+                // "big DNumber": "little DNumber" with metadata; N[metadata][little DNumber]e
+                _nestingStack.Push(BencodingComplexType.DNumber);
+                _offset++;
+                _nodeType = NodeType.StartDNumber;
+            }
+            else if (ch == (byte)'S')
+            {
+                // "big DString": bytestring with metadata; S[metadata][bytestring]e
+                _nestingStack.Push(BencodingComplexType.DString);
+                _offset++;
+                _nodeType = NodeType.StartDString;
+            }
+            else if (ch == (byte)'R')
+            {
+                // "big DRecord": dictionary with metadata; R[metadata][key][value]...e
+                _nestingStack.Push(BencodingComplexType.DRecord);
+                _offset++;
+                _nodeType = NodeType.StartDRecord;
+            }
             else if (ch == (byte)'e')
             {
+                // end of complex object marker
                 BencodingComplexType t;
 
                 if (_nestingStack.Count == 0)
@@ -106,13 +165,25 @@ namespace Demotic.Network
                     case BencodingComplexType.List:
                         _nodeType = NodeType.EndList;
                         break;
+                    case BencodingComplexType.DNumber:
+                        _nodeType = NodeType.EndDNumber;
+                        break;
+                    case BencodingComplexType.DString:
+                        _nodeType = NodeType.EndDString;
+                        break;
+                    case BencodingComplexType.DRecord:
+                        _nodeType = NodeType.EndDRecord;
+                        break;
+                    case BencodingComplexType.Metadata:
+                        _nodeType = NodeType.EndMetadata;
+                        break;
                     default:
                         throw new NotImplementedException();
                 }
             }
             else
             {
-                _nodeType = NodeType.Error;
+                throw new BadBencodingException("didn't recognize node type");
             }
 
             return _nodeType;
@@ -144,6 +215,20 @@ namespace Demotic.Network
             }
         }
 
+        // TODO: replace with real type
+        public decimal NumberValue
+        {
+            get
+            {
+                if (_nodeType != NodeType.Number)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                return _numberValue;
+            }
+        }
+
         public int NextOffset
         {
             get
@@ -158,6 +243,8 @@ namespace Demotic.Network
         private NodeType _nodeType;
         private long _integerValue;
         private byte[] _bytestringValue;
+        // TODO: replace with real type.
+        private decimal _numberValue;
 
         private Stack<BencodingComplexType> _nestingStack;
 
@@ -270,5 +357,49 @@ namespace Demotic.Network
 
             throw new NotImplementedException();
         }
+
+        private static decimal? DecodeNumber(byte[] encoded, int start, out int nextPos)
+        {
+            Debug.Assert(encoded[start] == (byte)'n');
+
+            int end = -1;
+
+            for (int pos = start + 1; pos < encoded.Length; pos++)
+            {
+                if (encoded[pos] == (byte)'e')
+                {
+                    end = pos;
+                    break;
+                }
+            }
+
+            if (end == -1)
+            {
+                // no end found.  bomb out.
+                nextPos = start;
+                return null;
+            }
+
+            string s = new string(Encoding.ASCII.GetChars(encoded, start + 1, end - (start + 1)));
+
+            try
+            {
+                decimal d = decimal.Parse(s);
+
+                nextPos = end + 1;
+                return d;
+            }
+            catch (FormatException)
+            {
+                throw new BadBencodingException("garbage in integer");
+            }
+            catch (OverflowException)
+            {
+                throw new BadBencodingException("integer too large");
+            }
+
+            throw new NotImplementedException();
+        }
+
     }
 }

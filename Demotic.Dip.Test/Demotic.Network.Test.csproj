@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BdecoderTest.cs" />
     <Compile Include="BencodingUtils.cs" />
+    <Compile Include="DipMessageFormatTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BencoderTest.cs" />
   </ItemGroup>
@@ -64,6 +65,9 @@
       <Project>{70E53AFA-A354-42AA-8111-600435232560}</Project>
       <Name>Demotic.Network</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\Demotic.Network.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
