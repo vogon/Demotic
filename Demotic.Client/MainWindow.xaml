@@ -14,11 +14,12 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
+        <Button Content="Object Explorer" Name="BtnObjectExplorer" Grid.Row="0" Grid.Column="0" Margin="6,6,3,0" Click="OnPaneChangeClick" />
+        <Button Content="Script Editor" Name="BtnScriptEditor" Grid.Row="0" Grid.Column="1" Margin="3,6,3,0" Click="OnPaneChangeClick" />
+        <Button Content="DIP Console" Name="BtnDipConsole" Grid.Row="0" Grid.Column="2" Margin="3,6,6,0" Click="OnPaneChangeClick" />
         
-        <Button Content="DIP Console" Name="BtnDipConsole" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="6,6,3,0" />
-        <Button Content="Object Explorer" Name="BtnObjectExplorer" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Margin="3,6,3,0" />
-        
-        <Frame Name="ContentFrame" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0" Margin="6,6,6,6" Grid.ColumnSpan="3" />
+        <Frame Name="ContentFrame" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0" Margin="6,6,6,6" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden" />
         
         <StatusBar Name="statusBar1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
             <Label Content="doin' stuff" Name="label1" />

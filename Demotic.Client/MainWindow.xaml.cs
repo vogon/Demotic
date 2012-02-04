@@ -32,12 +32,38 @@ namespace Demotic.Client
             app.Connect("localhost", 17717);
 
             _dipConsole = new DipConsolePage();
+            _scriptEditor = new ScriptEditorPage();
 
-            ContentFrame.Navigate(_dipConsole);
+            _navigationButtons = new Button[] { BtnDipConsole, BtnObjectExplorer, BtnScriptEditor };
+
+            DoNavigate(BtnDipConsole, _dipConsole);
         }
 
-        private Client _client;
+        private void OnPaneChangeClick(object sender, RoutedEventArgs e)
+        {
+            if (sender == BtnDipConsole)
+            {
+                DoNavigate(BtnDipConsole, _dipConsole);
+            }
+            else if (sender == BtnScriptEditor)
+            {
+                DoNavigate(BtnScriptEditor, _scriptEditor);
+            }
+        }
+
+        private void DoNavigate(Button button, object content)
+        {
+            ContentFrame.Navigate(content);
+
+            foreach (Button b in _navigationButtons)
+            {
+                b.IsEnabled = (b != button);
+            }
+        }
+
+        private readonly Button[] _navigationButtons;
 
         private DipConsolePage _dipConsole;
+        private ScriptEditorPage _scriptEditor;
     }
 }
