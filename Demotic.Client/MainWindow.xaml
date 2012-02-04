@@ -1,12 +1,27 @@
 ﻿<Window x:Class="Demotic.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="462" Width="495">
+        Title="Demotic Client, v. hella early" Height="640" Width="480">
     <Grid>
-        <Button Content="DIP Console" Height="23" HorizontalAlignment="Left" Margin="12,12,0,0" Name="BtnDipConsole" VerticalAlignment="Top" Width="130" />
-        <Frame Height="348" HorizontalAlignment="Left" Margin="12,41,0,0" Name="ContentFrame" VerticalAlignment="Top" Width="449" />
-        <Button Content="Object Explorer" Height="23" HorizontalAlignment="Left" Margin="148,12,0,0" Name="BtnObjectExplorer" VerticalAlignment="Top" Width="130" />
-        <StatusBar Height="28" HorizontalAlignment="Left" Margin="0,395,0,0" Name="statusBar1" VerticalAlignment="Top" Width="979" />
-        <Label Content="doin' stuff" Height="28" HorizontalAlignment="Left" Margin="0,395,0,0" Name="label1" VerticalAlignment="Top" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Button Content="DIP Console" Name="BtnDipConsole" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="6,6,3,0" />
+        <Button Content="Object Explorer" Name="BtnObjectExplorer" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Margin="3,6,3,0" />
+        
+        <Frame Name="ContentFrame" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0" Margin="6,6,6,6" Grid.ColumnSpan="3" />
+        
+        <StatusBar Name="statusBar1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+            <Label Content="doin' stuff" Name="label1" />
+        </StatusBar>
     </Grid>
 </Window>
