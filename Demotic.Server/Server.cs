@@ -123,6 +123,16 @@ namespace Demotic.Server
 
                 request = new PutObjectAction(context, path, value);
             }
+            else if (msg.OpCode == MessageOpCode.DoScript)
+            {
+                string trigger = GetString(msg, "when");
+                string body = GetString(msg, "do");
+
+                if (trigger == null) context.NegativeAcknowledge();
+                if (body == null) context.NegativeAcknowledge();
+
+                request = new DoScriptAction(context, trigger, body);
+            }
             else if (msg.OpCode == MessageOpCode.NG ||
                      msg.OpCode == MessageOpCode.OK ||
                      msg.OpCode == MessageOpCode.Quote)

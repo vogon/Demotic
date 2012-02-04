@@ -11,6 +11,7 @@ namespace Demotic.Network
         OK = 2,
         NG = 3,
         GetObject = 4,
-        PutObject = 5
+        PutObject = 5,
+        DoScript = 6
     }
 }
