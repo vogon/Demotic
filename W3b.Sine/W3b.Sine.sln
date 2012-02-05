@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3b.Sine", "W3b.Sine\W3b.Sine.csproj", "{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3b.Sine.Sample", "W3b.Sine.Sample\W3b.Sine.Sample.csproj", "{09EF08E1-D93C-4FB1-9F9D-B0436A0065A8}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs02.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = W3b.Sine\\W3b.Sine.csproj
+		SccProjectName1 = W3b.Sine
+		SccLocalPath1 = W3b.Sine
+		SccProjectUniqueName2 = W3b.Sine.Sample\\W3b.Sine.Sample.csproj
+		SccProjectName2 = W3b.Sine.Sample
+		SccLocalPath2 = W3b.Sine.Sample
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EF08E1-D93C-4FB1-9F9D-B0436A0065A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EF08E1-D93C-4FB1-9F9D-B0436A0065A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EF08E1-D93C-4FB1-9F9D-B0436A0065A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EF08E1-D93C-4FB1-9F9D-B0436A0065A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

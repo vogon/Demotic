@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="W3b.Sine.BigFloat" Collapsed="true">
+    <Position X="4.5" Y="1.25" Width="1.5" />
+    <InheritanceLine Type="W3b.Sine.BigNum" FixedFromPoint="true">
+      <Path>
+        <Point X="3.25" Y="1.562" />
+        <Point X="4.5" Y="1.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAgAAABQAAABwMqAIDgAFEAAAARIAAAAwEAmAAQLA=</HashCode>
+      <FileName>Numbers\BigFloat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigInt" Collapsed="true">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="W3b.Sine.BigNum" FixedFromPoint="true">
+      <Path>
+        <Point X="3.25" Y="1.562" />
+        <Point X="3.625" Y="1.562" />
+        <Point X="3.625" Y="2.565" />
+        <Point X="4.5" Y="2.565" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQAAABwEoAABAAEAAAAAAIAAgAAECmAAADA=</HashCode>
+      <FileName>Numbers\BigInt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigMath">
+    <Position X="1.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQACAAAAARAgBAgAkAAEAAAAAAmAEAAAAAAAAUABAAA=</HashCode>
+      <FileName>Numbers\BigMath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigNum">
+    <Position X="1.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQAAABwM4AWDAgEAAAIAAIABAAAECGAABzA=</HashCode>
+      <FileName>Numbers\BigNum.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="W3b.Sine.BigRational" Collapsed="true">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="W3b.Sine.BigNum" FixedFromPoint="true">
+      <Path>
+        <Point X="3.25" Y="1.562" />
+        <Point X="3.625" Y="1.562" />
+        <Point X="3.625" Y="3.565" />
+        <Point X="4.5" Y="3.565" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQAAABwEoAABAgEABAAAAIQAAAAEAmAAADA=</HashCode>
+      <FileName>Numbers\BigRational.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.Expression">
+    <Position X="11.25" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AJAAASAIAQAJCggkAAAKAgAAAAQAAAAAAIACoAQAAAA=</HashCode>
+      <FileName>Expression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.ExpressionException" Collapsed="true">
+    <Position X="11.25" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Expression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.Extensions">
+    <Position X="13.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigIntFactory" Collapsed="true">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Numbers\BigIntFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigNumFactory">
+    <Position X="4.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIEAAAQIAsAAAIJAACFCAQGQAwBIAEAABEEFiABAAAA=</HashCode>
+      <FileName>Numbers\BigNumFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigFloatFactory" Collapsed="true">
+    <Position X="6.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Numbers\BigFloatFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="W3b.Sine.BigRationalFactory" Collapsed="true">
+    <Position X="6.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Numbers\BigRationalFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="W3b.Sine.BigNumImpl" Collapsed="true">
+    <Position X="8.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAgACA=</HashCode>
+      <FileName>Numbers\BigNumImpl.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="W3b.Sine.Operator" Collapsed="true">
+    <Position X="13.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICMBAAAgBBCAAiAgAAAAAAAABCGAgAAgAAAAAAAAAAQ=</HashCode>
+      <FileName>Expression.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="W3b.Sine.Precedence" Collapsed="true">
+    <Position X="13.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAQgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Expression.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

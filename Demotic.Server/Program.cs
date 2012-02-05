@@ -15,6 +15,8 @@ namespace Demotic.Server
         static void Main(string[] args)
         {
             World = new World();
+            // PROBABLY A BUG: if there's a compile error in this script, the script loop will crash
+            // and never run scripts again.
             Script s = new Script("(Get(\"flag\") != null) && (((DNumber)Get(\"flag\")).Value >= 10)",
                                   "Console.WriteLine(\"hi!\"); Environment.Exit(0);");
 

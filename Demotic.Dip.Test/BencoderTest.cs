@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Demotic.Core.ObjectSystem;
 using Demotic.Network;
 
+using W3b.Sine;
+
 namespace Demotic.Network.Test
 {
     [TestClass]
@@ -97,8 +99,10 @@ namespace Demotic.Network.Test
         [TestMethod]
         public void TestEncodeDNumber()
         {
+            BigNum n = BigFloatFactory.Instance.Create(123.45);
+
             AssertEncodesTo(
-                (e => e.StartDNumber().Number(123.45m).FinishDNumber()), 
+                (e => e.StartDNumber().Number(n).FinishDNumber()), 
                 "Nn123.45ee"
                 );
         }

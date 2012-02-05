@@ -65,6 +65,10 @@
       <Project>{70E53AFA-A354-42AA-8111-600435232560}</Project>
       <Name>Demotic.Network</Name>
     </ProjectReference>
+    <ProjectReference Include="..\W3b.Sine\W3b.Sine\W3b.Sine.csproj">
+      <Project>{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}</Project>
+      <Name>W3b.Sine</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="Test References\Demotic.Network.accessor" />

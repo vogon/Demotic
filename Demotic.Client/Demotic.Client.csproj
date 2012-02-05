@@ -62,6 +62,7 @@
     <Compile Include="ScriptEditorPage.xaml.cs">
       <DependentUpon>ScriptEditorPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScriptEditorViewModel.cs" />
     <Page Include="DipConsolePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

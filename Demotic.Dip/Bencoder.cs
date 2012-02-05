@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using W3b.Sine;
+
 namespace Demotic.Network
 {
     internal class Bencoder
@@ -60,7 +62,7 @@ namespace Demotic.Network
             return this;
         }
 
-        public Bencoder Number(decimal value)
+        public Bencoder Number(BigNum value)
         {
             InternalWriteString("n{0}e", value);
 

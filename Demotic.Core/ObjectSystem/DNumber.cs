@@ -4,22 +4,33 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
+using W3b.Sine;
+
 namespace Demotic.Core.ObjectSystem
 {
     /// <summary>
     ///   An abstract number type for the purpose of Demotic rules.
     /// </summary>
-    /// <remarks>
-    ///   Ultimately there should be no mention of integers or doubles or any "real-world"
-    ///   number type; we should pull in an arbitrary-precision numerics library that's
-    ///   as close to accurately representing all of R as possible, and make it possible to use
-    ///   it as you would any other number.
-    /// </remarks>
     public class DNumber : DObject
     {
-        public DNumber(decimal decValue)
+        public DNumber(long value)
         {
-            _value = decValue;
+            _value = BigFloatFactory.Instance.Create(value);
+        }
+
+        public DNumber(double value)
+        {
+            _value = BigFloatFactory.Instance.Create(value);
+        }
+
+        public DNumber(decimal value)
+        {
+            _value = BigFloatFactory.Instance.Create(value);
+        }
+
+        private DNumber(BigNum num)
+        {
+            _value = num;
         }
 
         // NOTE: the Roslyn CTP is missing operator overloading support.  (sad face.)
@@ -30,26 +41,16 @@ namespace Demotic.Core.ObjectSystem
             return new DNumber(dec);
         }
 
-        public static implicit operator DNumber(int i)
+        public static implicit operator DNumber(long i)
         {
             return new DNumber(i);
         }
 
         public static implicit operator DNumber(double d)
         {
-            return new DNumber((decimal)d);
+            return new DNumber(d);
         }
-
-        public static explicit operator int(DNumber dn)
-        {
-            return (int)dn.Value;
-        }
-
-        public static explicit operator double(DNumber dn)
-        {
-            return (double)dn.Value;
-        }
-
+        
         public static DNumber operator -(DNumber a)
         {
             return new DNumber(-a._value);
@@ -75,11 +76,16 @@ namespace Demotic.Core.ObjectSystem
             return _value.ToString();
         }
 
-        public decimal Value
+        public BigNum Value
         {
             get { return _value; }
         }
 
-        private decimal _value;
+        //public decimal Value
+        //{
+        //    get { return _value; }
+        //}
+
+        private BigNum _value;
     }
 }

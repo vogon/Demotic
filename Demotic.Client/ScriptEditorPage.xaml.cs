@@ -23,5 +23,10 @@ namespace Demotic.Client
         {
             InitializeComponent();
         }
+
+        private void OnSubmitButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
