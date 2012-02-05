@@ -22,11 +22,15 @@ namespace Demotic.Client
         public ScriptEditorPage()
         {
             InitializeComponent();
+
+            _vm = new ScriptEditorViewModel(((DemoticApp)DemoticApp.Current).Client);
         }
 
         private void OnSubmitButtonClick(object sender, RoutedEventArgs e)
         {
-
+            _vm.Submit(TriggerTextBox.Text, BodyTextBox.Text);
         }
+
+        private ScriptEditorViewModel _vm;
     }
 }

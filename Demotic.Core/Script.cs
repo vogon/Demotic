@@ -21,6 +21,8 @@ namespace Demotic.Core
             _engine = new ScriptEngine(
                 new[] { "System", 
                         "System.Core",
+                        //"W3b.Sine",
+                        @"C:\Users\Colin Bayer\Documents\Demotic\Demotic.Server\bin\Debug\W3b.Sine.dll",
                         Assembly.GetExecutingAssembly().Location,
                       });
             
@@ -35,6 +37,8 @@ namespace Demotic.Core
 
         private struct WorldBinding
         {
+            public bool CompilationFailed { get; set; }
+
             public Session Session { get; set; }
 
             public Submission<bool> Trigger { get; set; }
@@ -46,7 +50,7 @@ namespace Demotic.Core
             WorldBinding b = new WorldBinding();
 
             b.Session = Session.Create(world.GlobalObjectRoot);
-            _engine.Execute("using System; using Demotic.Core; using Demotic.Core.ObjectSystem;", b.Session);
+            _engine.Execute("using System; using Demotic.Core; using Demotic.Core.ObjectSystem; using W3b.Sine;", b.Session);
 
             b.Trigger = _engine.CompileSubmission<bool>(_triggerSource, b.Session, isInteractive: true);
             b.Effect = _engine.CompileSubmission<bool>(_effectSource, b.Session, isInteractive: false);
@@ -56,12 +60,29 @@ namespace Demotic.Core
 
         public bool IsTriggered(World world)
         {
-            if (!_bindings.ContainsKey(world))
+            try
             {
-                BindTo(world);
+                if (!_bindings.ContainsKey(world))
+                {
+                    BindTo(world);
+                }
+            }
+            catch (Roslyn.Compilers.CompilationErrorException)
+            {
+                // suppress compilation errors and return false.
+                _bindings[world] = new WorldBinding { CompilationFailed = true };
+                
+                return false;
             }
 
-            return _bindings[world].Trigger.Execute();
+            if (!_bindings[world].CompilationFailed)
+            {
+                return _bindings[world].Trigger.Execute();
+            }
+            else
+            {
+                return false;
+            }
         }
         
         public void Run(World world)

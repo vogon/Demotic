@@ -22,7 +22,7 @@
         
         <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
             <Label Content="Trigger:" Margin="0,0,3,0" DockPanel.Dock="Left" />
-            <TextBox Margin="3,0,0,0" FontFamily="Consolas" FontSize="12" />
+            <TextBox Margin="3,0,0,0" FontFamily="Consolas" FontSize="12" Name="TriggerTextBox" />
         </DockPanel>
         
         <Label Content="Body:" Grid.Row="1" Grid.Column="0" />
@@ -34,7 +34,7 @@
             Grid.Row="2"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Margin="0,6,0,0" FontFamily="Consolas" FontSize="12" />
+            Margin="0,6,0,0" FontFamily="Consolas" FontSize="12" Name="BodyTextBox" />
         
         <Button Content="Submit" Grid.Row="3" Grid.Column="2" Margin="0,6,0,0" Click="OnSubmitButtonClick" />
         
