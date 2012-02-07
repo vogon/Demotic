@@ -9,26 +9,21 @@ using Roslyn.Scripting.CSharp;
 
 namespace Demotic.Core
 {
-    /// <summary>
-    ///   The atom of self-amendment.  A script consists of a trigger and an effect.
-    ///   It runs whenever the trigger is true, and carries out the actions described
-    ///   by the effect.
-    /// </summary>
-    public class Script
+    public class RoslynScript : Demotic.Core.IScript
     {
-        static Script()
+        static RoslynScript()
         {
             _engine = new ScriptEngine(
                 new[] { "System", 
                         "System.Core",
-                        //"W3b.Sine",
+                        // TODO: remove hard-coded dependency
                         @"C:\Users\Colin Bayer\Documents\Demotic\Demotic.Server\bin\Debug\W3b.Sine.dll",
                         Assembly.GetExecutingAssembly().Location,
                       });
             
         }
 
-        public Script(string trigger, string effect)
+        public RoslynScript(string trigger, string effect)
         {
             _triggerSource = trigger;
             _effectSource = effect;

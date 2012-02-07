@@ -67,7 +67,7 @@ namespace Demotic.Server
 
         public override void Execute()
         {
-            Script s = new Script(Trigger, Effect);
+            RoslynScript s = new RoslynScript(Trigger, Effect);
 
             try
             {

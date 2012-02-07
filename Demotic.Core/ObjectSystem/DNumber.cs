@@ -41,6 +41,11 @@ namespace Demotic.Core.ObjectSystem
             return new DNumber(dec);
         }
 
+        public static implicit operator DNumber(int i)
+        {
+            return new DNumber(i);
+        }
+
         public static implicit operator DNumber(long i)
         {
             return new DNumber(i);
@@ -59,6 +64,16 @@ namespace Demotic.Core.ObjectSystem
         public static DNumber operator +(DNumber a)
         {
             return a;
+        }
+
+        public static bool operator >=(DNumber a, int b)
+        {
+            return a >= (DNumber)b;
+        }
+
+        public static bool operator <=(DNumber a, int b)
+        {
+            return a <= (DNumber)b;
         }
 
         public static bool operator >=(DNumber a, DNumber b)

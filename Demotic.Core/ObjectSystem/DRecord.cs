@@ -25,7 +25,19 @@ namespace Demotic.Core.ObjectSystem
             }
             else
             {
-                return base.TryGetMember(binder, out result);
+                object realMember = null;
+                bool realMemberExists = base.TryGetMember(binder, out realMember);
+
+                if (realMemberExists)
+                {
+                    result = realMember;
+                }
+                else
+                {
+                    result = null;
+                }
+
+                return true;
             }
         }
 

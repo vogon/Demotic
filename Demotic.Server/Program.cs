@@ -15,10 +15,10 @@ namespace Demotic.Server
         static void Main(string[] args)
         {
             World = new World();
-            // PROBABLY A BUG: if there's a compile error in this script, the script loop will crash
-            // and never run scripts again.
-            Script s = new Script("(Get(\"flag\") != null) && (((DNumber)Get(\"flag\")) >= 10)",
-                                  "Console.WriteLine(\"hi!\"); Environment.Exit(0);");
+            //RoslynScript s = new RoslynScript("(Get(\"flag\") != null) && (((DNumber)Get(\"flag\")).Value >= BigFloatFactory.Instance.Create(10))",
+            //                      "Console.WriteLine(\"hi!\"); Environment.Exit(0);");
+
+            IronPythonScript s = new IronPythonScript("(r.flag != None) and (r.flag >= 10)", "print \"hi!\"; exit(0);");
 
             Server srv = new Server();
 

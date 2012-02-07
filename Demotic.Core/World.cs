@@ -13,7 +13,7 @@ namespace Demotic.Core
     {
         public World()
         {
-            _scripts = new List<Script>();
+            _scripts = new List<IScript>();
             _stopLoopSource = new CancellationTokenSource();
 
             GlobalObjectRoot = new DRecord();
@@ -36,7 +36,7 @@ namespace Demotic.Core
             _loopTask.Wait();
         }
 
-        public void RegisterScript(Script s)
+        public void RegisterScript(IScript s)
         {
             _scripts.Add(s);
         }
@@ -45,7 +45,7 @@ namespace Demotic.Core
         {
             while (!token.IsCancellationRequested)
             {
-                foreach (Script s in _scripts)
+                foreach (IScript s in _scripts)
                 {
                     if (s.IsTriggered(this))
                     {
@@ -60,7 +60,7 @@ namespace Demotic.Core
         private Task _loopTask;
         private CancellationTokenSource _stopLoopSource;
 
-        private List<Script> _scripts;
+        private List<IScript> _scripts;
 
         public DRecord GlobalObjectRoot { get; private set; }
     }
