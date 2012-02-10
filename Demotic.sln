@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demotic.Client", "Demotic.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3b.Sine", "W3b.Sine\W3b.Sine\W3b.Sine.csproj", "{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demotic.Core.Test", "Demotic.Core.Test\Demotic.Core.Test.csproj", "{A68F5491-3C46-4140-9923-82AEC7C7BCBB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Demotic.vsmdi
@@ -105,6 +107,16 @@ Global
 		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2D8D532C-D1A5-429D-8B9B-2CC5C2D8E5FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A68F5491-3C46-4140-9923-82AEC7C7BCBB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

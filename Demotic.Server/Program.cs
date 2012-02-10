@@ -18,7 +18,11 @@ namespace Demotic.Server
             //RoslynScript s = new RoslynScript("(Get(\"flag\") != null) && (((DNumber)Get(\"flag\")).Value >= BigFloatFactory.Instance.Create(10))",
             //                      "Console.WriteLine(\"hi!\"); Environment.Exit(0);");
 
-            IronPythonScript s = new IronPythonScript("(r.flag != None) and (r.flag >= 10)", "print \"hi!\"; exit(0);");
+            IronPythonScript s = 
+                new IronPythonScript(
+                    "(r.flag != None) and (r.flag >= 10)", 
+                    "print \"hi!\"; exit(0);"
+                );
 
             Server srv = new Server();
 

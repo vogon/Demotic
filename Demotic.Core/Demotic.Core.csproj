@@ -46,8 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClrTypeScript.cs" />
     <Compile Include="IronPythonScript.cs" />
     <Compile Include="IScript.cs" />
+    <Compile Include="ObjectSystem\DObjectNavigator.cs" />
     <Compile Include="ObjectSystem\DNumber.cs" />
     <Compile Include="ObjectSystem\DObject.cs" />
     <Compile Include="ObjectSystem\DRecord.cs" />

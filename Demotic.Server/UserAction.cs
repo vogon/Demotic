@@ -29,6 +29,11 @@ namespace Demotic.Server
 
         public override void Execute()
         {
+            DObjectNavigator nav = new DObjectNavigator(Program.World.GlobalObjectRoot);
+
+            nav.Select(Path);
+
+
             Client.QuoteObject(Program.World.GlobalObjectRoot.Get(Path));
             Client.Acknowledge();
         }
